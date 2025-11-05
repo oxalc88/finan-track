@@ -177,11 +177,10 @@ npm run dev:worker       # Start background worker
 npm run dev:all          # Start all services in Docker
 
 # Code Quality
+npm run format           # Format and auto-fix with Ultracite
 npm run lint             # Check code quality and complexity
-npm run lint:fix         # Auto-fix linting issues
 npm run typecheck        # TypeScript type checking
-npm run format           # Format code with Prettier
-npm run check            # Run all checks (lint + typecheck + test)
+npm run check            # Run all checks (typecheck + lint + test)
 
 # Testing
 npm test                 # Run tests
@@ -230,16 +229,25 @@ KAPSO_WEBHOOK_SECRET=your_secret_here
 
 ## Code Quality & Complexity Management
 
-This project uses **ESLint with strict complexity rules** to keep code maintainable:
+This project uses **Ultracite** - a zero-config linter and formatter built on Biome (Rust-based, super fast).
 
-- **Max cyclomatic complexity**: 10
-- **Max function length**: 50 lines
-- **Max parameters**: 4
-- **Max nesting depth**: 4
-- **Explicit return types** required
-- **No unused variables**
+### Why Ultracite?
+- ✅ **Zero configuration** - Works out of the box
+- ✅ **50-100x faster** than ESLint (built in Rust)
+- ✅ **Replaces ESLint + Prettier** - One tool for both
+- ✅ **AI-optimized** - Works great with Claude Code, Copilot, Cursor
+- ✅ **Complexity management built-in** - No manual rules needed
 
-These rules enforce simple, testable functions and prevent over-complexity.
+### What it enforces:
+- Complexity limits (prevents deeply nested code)
+- Type safety (no implicit any, explicit return types)
+- Import organization (auto-sorted, no unused)
+- Code formatting (consistent style)
+- Accessibility (a11y rules for React)
+
+**Setup:** Just run `npx ultracite init` - that's it!
+
+See [docs/ULTRACITE_SETUP.md](./docs/ULTRACITE_SETUP.md) for detailed guide.
 
 ---
 

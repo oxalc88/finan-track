@@ -28,10 +28,8 @@ npm install amqplib @aws-sdk/client-sqs
 # Install dev dependencies
 npm install -D typescript tsx @types/node @types/pg
 
-# Install linting & formatting
-npm install -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
-npm install -D prettier eslint-config-prettier eslint-plugin-prettier
-npm install -D eslint-plugin-complexity
+# Install linting & formatting (Ultracite)
+npx ultracite init  # This installs Ultracite automatically
 
 # Install testing
 npm install -D vitest @vitest/coverage-v8
@@ -142,88 +140,49 @@ finan-track/
 
 ---
 
-### 1.4 ESLint Configuration (Complexity Management)
+### 1.4 Ultracite Setup (Linting & Formatting)
 
-**Create `.eslintrc.js`:**
-```javascript
-module.exports = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2022,
-    sourceType: 'module',
-    project: './tsconfig.json',
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'prettier',
-  ],
-  plugins: ['@typescript-eslint', 'prettier'],
-  rules: {
-    // Prettier
-    'prettier/prettier': 'error',
+**What is Ultracite?**
+Ultracite is a **zero-configuration** linter and formatter built on Biome (Rust-based, super fast). It replaces both ESLint and Prettier with a single tool optimized for TypeScript and AI-assisted development.
 
-    // Complexity Management
-    'complexity': ['error', 10], // Max cyclomatic complexity
-    'max-lines': ['error', { max: 300, skipBlankLines: true, skipComments: true }],
-    'max-lines-per-function': ['error', { max: 50, skipBlankLines: true, skipComments: true }],
-    'max-depth': ['error', 4], // Max nesting depth
-    'max-params': ['error', 4], // Max function parameters
-    'max-nested-callbacks': ['error', 3],
+**Why Ultracite?**
+- ✅ **Zero configuration** - Works out of the box
+- ✅ **Super fast** - 50-100x faster than ESLint (built in Rust)
+- ✅ **One tool** - Replaces ESLint + Prettier
+- ✅ **AI-optimized** - Works great with Claude Code, Copilot, Cursor
+- ✅ **Complexity management built-in** - No manual rules needed
+- ✅ **Format on save** - Never blocks your workflow
 
-    // Code Quality
-    'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
-    'no-debugger': 'error',
-    'no-alert': 'error',
-    'no-var': 'error',
-    'prefer-const': 'error',
-    'prefer-arrow-callback': 'error',
-    'no-duplicate-imports': 'error',
-
-    // TypeScript Specific
-    '@typescript-eslint/explicit-function-return-type': ['error', {
-      allowExpressions: true,
-      allowTypedFunctionExpressions: true,
-    }],
-    '@typescript-eslint/no-unused-vars': ['error', {
-      argsIgnorePattern: '^_',
-      varsIgnorePattern: '^_',
-    }],
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'warn',
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/prefer-optional-chain': 'error',
-    '@typescript-eslint/no-floating-promises': 'error',
-
-    // Prevent Complex Code
-    '@typescript-eslint/no-unnecessary-condition': 'error',
-    '@typescript-eslint/prefer-reduce-type-parameter': 'error',
-    '@typescript-eslint/prefer-string-starts-ends-with': 'error',
-  },
-  ignorePatterns: ['dist', 'node_modules', 'app/frontend'],
-};
+**Installation:**
+```bash
+npx ultracite init
 ```
 
-**What these rules enforce:**
-- **Max complexity: 10** - Forces you to break down complex functions
-- **Max 50 lines per function** - Keeps functions small and focused
-- **Max 4 parameters** - Encourages using objects for complex inputs
-- **Max nesting depth: 4** - Prevents deeply nested if/loops
-- **Explicit return types** - Makes code self-documenting
-- **No unused variables** - Keeps code clean
+This automatically:
+- Installs Ultracite
+- Creates `biome.jsonc` config
+- Sets up VS Code integration
+- Enables format-on-save
 
-**Example of what gets flagged:**
+**What Ultracite Enforces (Automatically):**
+- ✅ Code formatting (like Prettier)
+- ✅ Type safety (strict TypeScript rules)
+- ✅ Complexity limits (prevents complex code)
+- ✅ Import organization (sorted, no unused)
+- ✅ Accessibility (a11y rules for React)
+- ✅ Best practices (TypeScript, React, Next.js)
+
+**Example of what Ultracite catches:**
 
 ```typescript
-// ❌ BAD - Too complex (complexity > 10)
+// ❌ Ultracite error - Too complex, too nested
 function processData(data: any) {
   if (data) {
     if (data.type === 'A') {
       if (data.valid) {
         if (data.amount > 0) {
           if (data.status === 'active') {
-            // ... lots of nested logic
+            // ... deeply nested logic
           }
         }
       }
@@ -231,7 +190,7 @@ function processData(data: any) {
   }
 }
 
-// ✅ GOOD - Simple, single responsibility
+// ✅ Ultracite approves - Simple, clear
 function isValidData(data: Data): boolean {
   return (
     data !== null &&
@@ -243,34 +202,31 @@ function isValidData(data: Data): boolean {
 }
 
 function processData(data: Data): void {
-  if (!isValidData(data)) {
-    return;
-  }
-
+  if (!isValidData(data)) return;
   // Process valid data
 }
 ```
 
----
-
-### 1.5 Prettier Configuration
-
-**Create `.prettierrc.json`:**
-```json
+**biome.jsonc** (created automatically):
+```jsonc
 {
-  "semi": true,
-  "singleQuote": true,
-  "tabWidth": 2,
-  "trailingComma": "es5",
-  "printWidth": 100,
-  "arrowParens": "always",
-  "endOfLine": "lf"
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "extends": ["ultracite"],
+
+  // Optional: Customize if needed (but defaults are great!)
+  "files": {
+    "ignore": ["node_modules", "dist", "build", ".next"]
+  }
 }
 ```
 
+**No other configuration needed!** Ultracite works perfectly out of the box.
+
+See [docs/ULTRACITE_SETUP.md](./ULTRACITE_SETUP.md) for detailed guide.
+
 ---
 
-### 1.6 Package.json Scripts
+### 1.5 Package.json Scripts
 
 **Update `package.json`:**
 ```json
@@ -289,9 +245,8 @@ function processData(data: Data): void {
     "start": "node dist/server.js",
     "start:worker": "node dist/worker.js",
 
-    "lint": "eslint app --ext .ts",
-    "lint:fix": "eslint app --ext .ts --fix",
-    "format": "prettier --write \"app/**/*.ts\"",
+    "format": "ultracite fix",
+    "lint": "ultracite check",
     "typecheck": "tsc --noEmit",
 
     "test": "vitest",
@@ -313,8 +268,9 @@ function processData(data: Data): void {
 **Key scripts:**
 - `npm run dev` - Start API in watch mode
 - `npm run dev:all` - Start everything (DB, queue, API, worker) in Docker
-- `npm run check` - Run all checks before committing
-- `npm run lint` - Check code quality and complexity
+- `npm run check` - Run all checks (typecheck + lint + test)
+- `npm run format` - Format and auto-fix code with Ultracite
+- `npm run lint` - Check code quality and complexity with Ultracite
 
 ---
 
@@ -545,18 +501,21 @@ tmp/
 Thumbs.db
 ```
 
-**Create `.vscode/settings.json`** (recommended):
+**Create `.vscode/settings.json`** (Ultracite integration):
 ```json
 {
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "quickfix.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true
 }
 ```
+
+**Note:** Install the Biome VS Code extension: `biomejs.biome`
 
 ---
 
@@ -655,26 +614,28 @@ start().catch((error) => {
 After Phase 1, you should be able to:
 
 1. ✅ Run `npm install` successfully
-2. ✅ Run `npm run typecheck` with no errors
-3. ✅ Run `npm run lint` with no errors
-4. ✅ Start Docker services: `npm run dev:all`
-5. ✅ Start API server: `npm run dev`
-6. ✅ Access health check: `curl http://localhost:3000/health`
+2. ✅ Run `npx ultracite init` (sets up linting/formatting)
+3. ✅ Run `npm run typecheck` with no errors
+4. ✅ Run `npm run lint` with no errors
+5. ✅ Start Docker services: `npm run dev:all`
+6. ✅ Start API server: `npm run dev`
+7. ✅ Access health check: `curl http://localhost:3000/health`
+8. ✅ Code formats automatically on save in VS Code
 
 ---
 
 ## Complexity Management Examples
 
-The ESLint rules will catch:
+Ultracite automatically catches these issues:
 
 ```typescript
-// ❌ Function too complex (complexity > 10)
+// ❌ Ultracite error - Too complex, too nested
 function bad(x: number): number {
   if (x > 0) {
     if (x < 10) {
       if (x % 2 === 0) {
         if (x > 5) {
-          // ...more nesting
+          // ...deeply nested logic
         }
       }
     }
@@ -682,7 +643,7 @@ function bad(x: number): number {
   return x;
 }
 
-// ✅ Simple, testable
+// ✅ Ultracite approves - Simple, testable
 function isEvenBetween5And10(x: number): boolean {
   return x > 5 && x < 10 && x % 2 === 0;
 }
@@ -695,6 +656,15 @@ function good(x: number): number {
   return x * 2;
 }
 ```
+
+**What Ultracite enforces:**
+- Complexity limits (prevents deeply nested code)
+- Type safety (no implicit any, explicit return types)
+- Import organization (auto-sorted, no unused imports)
+- Code formatting (consistent style)
+- Accessibility (a11y rules for React)
+
+All with **zero configuration**!
 
 ---
 
