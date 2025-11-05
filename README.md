@@ -1,21 +1,34 @@
 # Invoice Processing & Financial Tracking App
 
-A serverless invoice processing and financial tracking application built on Cloudflare's platform with WhatsApp integration via Kapso.ai.
+A cloud-agnostic invoice processing and financial tracking application with WhatsApp integration via Kapso.ai. Built with a **layered functional architecture** for simplicity and maintainability.
 
 ## Overview
 
 This application automates invoice ingestion from WhatsApp, extracts structured data using OCR, and provides a comprehensive financial dashboard for tracking expenses, managing credit cards, and optimizing payment schedules.
 
+**Key Design Principles:**
+- 🎯 **Cloud-agnostic** - Deploy to AWS, Cloudflare, Docker, or any platform
+- 🏗️ **Layered architecture** - Simple, functional, pragmatic
+- 📦 **Infrastructure as Code** - Terraform for all infrastructure
+- 🧩 **Clean separation** - Application code and infrastructure are independent
+- ⚡ **Solo-dev friendly** - No classes, no over-abstraction
+
 ## Architecture
 
-- **Compute**: Cloudflare Workers
-- **Database**: Cloudflare D1 (SQLite)
-- **Storage**: Cloudflare R2
-- **Queue**: Cloudflare Queues (OCR processing)
-- **Scheduling**: Cloudflare Cron Triggers
-- **Frontend**: Cloudflare Pages
-- **Styling**: Tailwind CSS
+### Application Stack
+- **Language**: TypeScript (functional style, no classes)
+- **API**: Fastify
+- **Database**: PostgreSQL (or any SQL database)
+- **Storage**: S3-compatible (AWS S3, Cloudflare R2, MinIO)
+- **Queue**: SQS, RabbitMQ, or Cloudflare Queues
+- **Frontend**: React + Vite + Tailwind CSS
 - **WhatsApp**: Kapso.ai integration
+
+### Deployment Options
+- **AWS**: Lambda + RDS + S3 + SQS
+- **Cloudflare**: Workers + D1 + R2 + Queues
+- **Docker**: Containers + PostgreSQL + MinIO + RabbitMQ
+- **Hybrid**: Mix and match based on needs
 
 ## Features
 
@@ -30,26 +43,34 @@ This application automates invoice ingestion from WhatsApp, extracts structured 
 
 ```
 finan-track/
-├── IMPLEMENTATION_PLAN.md    # Detailed implementation roadmap
-├── theme.config.json          # Theme customization config
-├── theme.schema.json          # JSON schema for theme validation
-├── workers/                   # Cloudflare Workers
-│   ├── webhook/              # Kapso webhook handler
-│   ├── api/                  # API endpoints
-│   ├── ocr-processor/        # Queue consumer for OCR
-│   └── cron/                 # Scheduled jobs
-├── frontend/                  # Cloudflare Pages app
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── lib/
-│   │   └── styles/
-│   └── public/
-├── shared/                    # Shared types and utilities
-│   ├── types/
-│   ├── validators/
-│   └── utils/
-└── migrations/                # D1 database migrations
+├── app/                       # APPLICATION CODE
+│   ├── api/                  # HTTP routes and middleware
+│   ├── services/             # Business logic (pure functions)
+│   ├── repositories/         # Data access layer
+│   ├── jobs/                 # Background workers
+│   ├── lib/                  # External service clients
+│   ├── types/                # TypeScript types
+│   ├── utils/                # Helper functions
+│   ├── config/               # Configuration management
+│   └── frontend/             # Dashboard UI
+│
+├── infra/                     # INFRASTRUCTURE AS CODE
+│   └── terraform/
+│       ├── modules/          # Reusable Terraform modules
+│       ├── providers/        # Provider-specific configs (AWS, Cloudflare, etc.)
+│       └── environments/     # Environment configs (dev, staging, prod)
+│
+├── deployments/               # DEPLOYMENT CONFIGURATIONS
+│   ├── docker/               # Docker & Docker Compose
+│   ├── aws/                  # AWS Lambda configs
+│   └── cloudflare/           # Cloudflare Workers configs
+│
+├── migrations/                # Database migrations
+├── scripts/                   # Utility scripts
+├── tests/                     # Test suites
+├── docs/                      # Documentation
+├── theme.config.json          # Theme customization
+└── README.md
 ```
 
 ## Theme Customization
@@ -99,60 +120,102 @@ The theme is loaded at build time and generates CSS custom properties. After mod
 1. Rebuild the frontend: `npm run build` (or equivalent)
 2. The new colors will be applied throughout the application
 
-## Implementation Plan
+## Documentation
 
-See [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) for the complete breakdown of implementation tasks organized into phases:
+### Architecture Guides
+- **[LAYERED_ARCHITECTURE.md](./LAYERED_ARCHITECTURE.md)** - Main architecture overview (functional, layered approach)
+- **[ARCHITECTURE_COMPARISON.md](./docs/ARCHITECTURE_COMPARISON.md)** - Comparison of different architectural patterns
+- **[docs/PHASE_1_LAYERED.md](./docs/PHASE_1_LAYERED.md)** - Detailed Phase 1 implementation guide
+- **[docs/EXAMPLE_CODE.md](./docs/EXAMPLE_CODE.md)** - Working code examples
 
-1. **Phase 1**: Project Foundation & Configuration
-2. **Phase 2**: Database Schema & Data Models
-3. **Phase 3**: R2 Media Storage
-4. **Phase 4**: WhatsApp Integration (Kapso)
-5. **Phase 5**: OCR & Invoice Processing
-6. **Phase 6**: API Layer
-7. **Phase 7**: Dashboard Frontend
-8. **Phase 8**: Credit Card Tracking Logic
-9. **Phase 9**: Alerts & Notifications
-10. **Phase 10**: Testing & Quality Assurance
-11. **Phase 11**: Documentation & Deployment
+### Legacy Docs (Hexagonal Architecture - Not Recommended for Solo Dev)
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Hexagonal architecture (over-engineered)
+- **[IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md)** - Original plan (hexagonal)
 
-Each phase contains individual checkpoints that serve as verifiable milestones.
+**Recommendation:** Start with `LAYERED_ARCHITECTURE.md` for a pragmatic, solo-developer-friendly approach.
 
 ## Development Workflow
 
 ### Prerequisites
 
-- Node.js 18+ and npm/pnpm/yarn
-- Cloudflare account
-- Wrangler CLI installed globally
+- Node.js 18+ and npm/pnpm
+- Docker & Docker Compose (for local development)
 - Kapso.ai account (for WhatsApp integration)
 
-### Setup (Coming Soon)
+### Quick Start
 
 ```bash
-# Install dependencies
+# 1. Clone and install
+git clone <repo-url>
+cd finan-track
 npm install
 
-# Run database migrations
+# 2. Copy environment template
+cp .env.example .env
+# Edit .env with your values
+
+# 3. Start local infrastructure (PostgreSQL, MinIO, RabbitMQ, Redis)
+npm run dev:all
+# This starts Docker Compose with all services
+
+# 4. Run migrations
 npm run migrate
 
-# Start local development
+# 5. Start API server (in another terminal)
 npm run dev
+
+# 6. Start frontend (in another terminal)
+cd app/frontend && npm run dev
+```
+
+### Available Commands
+
+```bash
+# Development
+npm run dev              # Start API server with hot reload
+npm run dev:worker       # Start background worker
+npm run dev:all          # Start all services in Docker
+
+# Code Quality
+npm run lint             # Check code quality and complexity
+npm run lint:fix         # Auto-fix linting issues
+npm run typecheck        # TypeScript type checking
+npm run format           # Format code with Prettier
+npm run check            # Run all checks (lint + typecheck + test)
+
+# Testing
+npm test                 # Run tests
+npm run test:watch       # Run tests in watch mode
+npm run test:coverage    # Generate coverage report
+
+# Build
+npm run build            # Build for production
+npm run start            # Start production server
+
+# Database
+npm run migrate          # Run database migrations
+npm run seed             # Seed database with test data
 ```
 
 ### Environment Variables
 
-Create a `.dev.vars` file for local development:
+See `.env.example` for all available options. Key variables:
 
-```
-# Kapso
-KAPSO_API_KEY=your_kapso_api_key
-KAPSO_WEBHOOK_SECRET=your_webhook_secret
+```bash
+# Database
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/invoices
 
-# OCR Service (if external)
-OCR_API_KEY=your_ocr_api_key
+# Storage (works with S3, R2, MinIO)
+STORAGE_ENDPOINT=http://localhost:9000
+STORAGE_BUCKET=invoices
 
-# Optional
-DEBUG=true
+# Queue
+QUEUE_TYPE=rabbitmq
+QUEUE_URL=amqp://guest:guest@localhost:5672
+
+# WhatsApp
+KAPSO_API_KEY=your_key_here
+KAPSO_WEBHOOK_SECRET=your_secret_here
 ```
 
 ## License
@@ -165,4 +228,45 @@ DEBUG=true
 
 ---
 
-**Note**: This project is currently in development. Infrastructure setup (D1 databases, R2 buckets, Workers, etc.) is handled separately. This repository contains only the application code.
+## Code Quality & Complexity Management
+
+This project uses **ESLint with strict complexity rules** to keep code maintainable:
+
+- **Max cyclomatic complexity**: 10
+- **Max function length**: 50 lines
+- **Max parameters**: 4
+- **Max nesting depth**: 4
+- **Explicit return types** required
+- **No unused variables**
+
+These rules enforce simple, testable functions and prevent over-complexity.
+
+---
+
+## Why This Architecture?
+
+### Layered Functional vs. Hexagonal
+
+We chose **layered functional architecture** over hexagonal (ports & adapters) because:
+
+- ✅ **3x less code** for the same features
+- ✅ **Faster to build** as a solo developer
+- ✅ **Easier to understand** and maintain
+- ✅ **Still cloud-agnostic** via configuration
+- ✅ **Fully testable** with simple mocks
+
+See [docs/ARCHITECTURE_COMPARISON.md](./docs/ARCHITECTURE_COMPARISON.md) for detailed comparison.
+
+### Cloud-Agnostic Without Over-Engineering
+
+**How it works:**
+- Storage library uses S3-compatible client → works with S3, R2, MinIO
+- Database uses standard PostgreSQL → works anywhere
+- Queue library abstracts SQS, RabbitMQ, Cloudflare Queues
+- Change `.env` file → switch providers instantly
+
+**No classes, no DI container, no complex abstractions.** Just clean functions and configuration.
+
+---
+
+**Note**: Infrastructure setup (databases, storage, queues) is handled separately via Terraform in the `infra/` folder. Application and infrastructure are completely independent.
