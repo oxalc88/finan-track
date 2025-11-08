@@ -41,37 +41,48 @@ This application automates invoice ingestion from WhatsApp, extracts structured 
 
 ## Project Structure
 
+**Two independent folders:**
+
 ```
 finan-track/
-├── app/                       # APPLICATION CODE
+│
+├── app/                       # 📦 APPLICATION CODE (build this first)
 │   ├── api/                  # HTTP routes and middleware
 │   ├── services/             # Business logic (pure functions)
 │   ├── repositories/         # Data access layer
 │   ├── jobs/                 # Background workers
-│   ├── lib/                  # External service clients
+│   ├── lib/                  # External service clients (cloud-agnostic)
 │   ├── types/                # TypeScript types
 │   ├── utils/                # Helper functions
 │   ├── config/               # Configuration management
 │   └── frontend/             # Dashboard UI
 │
-├── infra/                     # INFRASTRUCTURE AS CODE
+├── infra/                     # 🏗️ INFRASTRUCTURE (set up later with Terraform)
 │   └── terraform/
 │       ├── modules/          # Reusable Terraform modules
-│       ├── providers/        # Provider-specific configs (AWS, Cloudflare, etc.)
-│       └── environments/     # Environment configs (dev, staging, prod)
+│       ├── providers/        # AWS / Cloudflare / Hetzner
+│       │   ├── aws/         # For Lambda or ECS
+│       │   ├── cloudflare/  # For Workers
+│       │   └── hetzner/     # For Docker on VPS
+│       └── environments/     # dev / staging / production
 │
-├── deployments/               # DEPLOYMENT CONFIGURATIONS
+├── deployments/               # 🚀 DEPLOYMENT CONFIGS
 │   ├── docker/               # Docker & Docker Compose
-│   ├── aws/                  # AWS Lambda configs
-│   └── cloudflare/           # Cloudflare Workers configs
+│   ├── aws/                  # Lambda or ECS configs
+│   └── cloudflare/           # Workers configs
 │
 ├── migrations/                # Database migrations
-├── scripts/                   # Utility scripts
-├── tests/                     # Test suites
 ├── docs/                      # Documentation
-├── theme.config.json          # Theme customization
-└── README.md
+└── theme.config.json          # Theme customization
 ```
+
+**Key principle:** Application and infrastructure are **completely independent**.
+
+- **Application** = Cloud-agnostic code (same code runs anywhere)
+- **Infrastructure** = Terraform provisions resources (DB, storage, queues)
+- **Bridge** = Environment variables (infra outputs → app inputs)
+
+See [docs/APP_INFRA_SEPARATION.md](./docs/APP_INFRA_SEPARATION.md) for detailed explanation.
 
 ## Theme Customization
 
@@ -270,11 +281,52 @@ See [docs/ARCHITECTURE_COMPARISON.md](./docs/ARCHITECTURE_COMPARISON.md) for det
 **How it works:**
 - Storage library uses S3-compatible client → works with S3, R2, MinIO
 - Database uses standard PostgreSQL → works anywhere
-- Queue library abstracts SQS, RabbitMQ, Cloudflare Queues
+- Queue library uses factory pattern → SQS, RabbitMQ, or Cloudflare Queues
 - Change `.env` file → switch providers instantly
 
 **No classes, no DI container, no complex abstractions.** Just clean functions and configuration.
 
 ---
 
-**Note**: Infrastructure setup (databases, storage, queues) is handled separately via Terraform in the `infra/` folder. Application and infrastructure are completely independent.
+## Application & Infrastructure Separation
+
+**Two-phase approach:**
+
+### Phase 1: Build Application (Now) ✅
+- Develop locally with Docker Compose (PostgreSQL, MinIO, RabbitMQ)
+- No cloud provider needed
+- Application code is completely cloud-agnostic
+- Uses environment variables for all connections
+
+### Phase 2: Set Up Infrastructure (Later) ⏳
+- Choose provider: AWS, Cloudflare, or Hetzner
+- Use Terraform to provision resources
+- Terraform outputs connection strings
+- Set environment variables from Terraform outputs
+- Deploy same application code - no changes needed!
+
+**Example:**
+```bash
+# Development (local)
+DATABASE_URL=postgresql://localhost:5432/invoices
+STORAGE_ENDPOINT=http://localhost:9000  # MinIO
+QUEUE_TYPE=rabbitmq
+
+# Production AWS (from Terraform outputs)
+DATABASE_URL=postgresql://rds-endpoint/invoices
+STORAGE_ENDPOINT=https://s3.amazonaws.com
+QUEUE_TYPE=sqs
+
+# Production Cloudflare (from Terraform outputs)
+DATABASE_URL=postgresql://neon.tech/invoices
+STORAGE_ENDPOINT=https://account.r2.cloudflarestorage.com
+QUEUE_TYPE=cloudflare
+```
+
+**Same application code, different environment variables!**
+
+See [docs/APP_INFRA_SEPARATION.md](./docs/APP_INFRA_SEPARATION.md) for complete guide.
+
+---
+
+**Current focus:** Building the **application** (`app/` folder). Infrastructure will be set up later with Terraform (`infra/` folder).
