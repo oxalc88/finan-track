@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-neutral-50 text-neutral-900 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-neutral-200 p-6;
+  }
+
+  .card-header {
+    @apply text-lg font-semibold text-neutral-800 mb-4;
+  }
+
+  .stat-card {
+    @apply bg-white rounded-lg shadow-sm border border-neutral-200 p-6 hover:shadow-md transition-shadow;
+  }
+
+  .stat-label {
+    @apply text-sm font-medium text-neutral-600 mb-1;
+  }
+
+  .stat-value {
+    @apply text-2xl font-bold text-neutral-900;
+  }
+
+  .stat-change {
+    @apply text-sm font-medium mt-2;
+  }
+
+  .stat-change.positive {
+    @apply text-success-600;
+  }
+
+  .stat-change.negative {
+    @apply text-error-600;
+  }
+}
