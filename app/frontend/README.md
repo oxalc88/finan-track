@@ -64,6 +64,39 @@ npm test
 npm run test:ui
 ```
 
+## Code Quality
+
+### Linting and Formatting
+
+This project uses **Biome** for code quality, complexity management, and formatting.
+
+```bash
+# Check for issues (no auto-fix)
+npm run lint
+
+# Auto-fix linting and formatting issues
+npm run lint:fix
+
+# Format code
+npm run format
+
+# Type checking
+npm run typecheck
+
+# Run all checks (typecheck + lint)
+npm run check
+```
+
+### Code Quality Rules
+
+Biome enforces:
+- **Complexity limits** - Prevents overly complex code
+- **TypeScript strict mode** - No implicit any, explicit return types
+- **React best practices** - Hooks rules, accessibility
+- **Import organization** - Auto-sorted imports
+- **Code formatting** - Consistent style (2 spaces, single quotes)
+- **Accessibility** - a11y rules for React components
+
 ## Project Structure
 
 ```
