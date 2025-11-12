@@ -1,7 +1,7 @@
+import { existsSync, mkdirSync } from 'fs'
+import { dirname, join } from 'path'
 import { chromium } from 'playwright'
 import { fileURLToPath } from 'url'
-import { dirname, join } from 'path'
-import { existsSync, mkdirSync } from 'fs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -73,24 +73,52 @@ async function takeScreenshots() {
       path: join(screenshotsDir, '06-notifications-alerts.png'),
     })
 
-    // Mobile view
-    console.log('7/8 - Capturing mobile view...')
+    // Mobile view - Home
+    console.log('7/11 - Capturing mobile home view...')
     await page.setViewportSize({ width: 375, height: 812 })
     await page.goto('http://localhost:3000', { waitUntil: 'domcontentloaded' })
     await page.waitForTimeout(2000)
     await page.screenshot({
-      path: join(screenshotsDir, '07-mobile-view.png'),
+      path: join(screenshotsDir, '07-mobile-home.png'),
+      fullPage: true,
+    })
+
+    // Mobile view - Credit Cards Detail
+    console.log('8/11 - Capturing mobile credit cards...')
+    await page.goto('http://localhost:3000/credit-cards', { waitUntil: 'domcontentloaded' })
+    await page.waitForTimeout(2000)
+    await page.screenshot({
+      path: join(screenshotsDir, '08-mobile-credit-cards.png'),
+      fullPage: true,
+    })
+
+    // Mobile view - Accounts Detail
+    console.log('9/11 - Capturing mobile accounts...')
+    await page.goto('http://localhost:3000/accounts', { waitUntil: 'domcontentloaded' })
+    await page.waitForTimeout(2000)
+    await page.screenshot({
+      path: join(screenshotsDir, '09-mobile-accounts.png'),
       fullPage: true,
     })
 
     // Tablet view
-    console.log('8/8 - Capturing tablet view...')
+    console.log('10/11 - Capturing tablet view...')
     await page.setViewportSize({ width: 768, height: 1024 })
     await page.goto('http://localhost:3000', { waitUntil: 'domcontentloaded' })
     await page.waitForTimeout(2000)
     await page.screenshot({
-      path: join(screenshotsDir, '08-tablet-view.png'),
+      path: join(screenshotsDir, '10-tablet-view.png'),
       fullPage: true,
+    })
+
+    // Desktop overview
+    console.log('11/11 - Capturing desktop overview...')
+    await page.setViewportSize({ width: 1920, height: 1080 })
+    await page.goto('http://localhost:3000', { waitUntil: 'domcontentloaded' })
+    await page.waitForTimeout(2000)
+    await page.screenshot({
+      path: join(screenshotsDir, '11-desktop-overview.png'),
+      clip: { x: 0, y: 0, width: 1920, height: 1080 },
     })
 
     console.log('✅ All screenshots captured successfully!')
