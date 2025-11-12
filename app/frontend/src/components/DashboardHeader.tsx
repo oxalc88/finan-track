@@ -12,7 +12,10 @@ export default function DashboardHeader(): JSX.Element {
             <p className="text-neutral-600 mt-1">{format(today, 'EEEE, MMMM d, yyyy')}</p>
           </div>
           <div className="flex items-center gap-4">
-            <button className="px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 transition-colors">
+            <button
+              type="button"
+              className="px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 transition-colors"
+            >
               Export
             </button>
             <div className="flex items-center gap-2">

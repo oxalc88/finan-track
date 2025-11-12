@@ -5,7 +5,9 @@ interface NotificationsAlertsProps {
   notifications: Notification[]
 }
 
-export default function NotificationsAlerts({ notifications }: NotificationsAlertsProps): JSX.Element {
+export default function NotificationsAlerts({
+  notifications,
+}: NotificationsAlertsProps): JSX.Element {
   const getNotificationIcon = (type: Notification['type']): string => {
     switch (type) {
       case 'bill':

@@ -35,10 +35,7 @@ export default function CreditCardTracker({ creditCards }: CreditCardTrackerProp
           const availableCredit = card.creditLimit - card.balance
 
           return (
-            <div
-              key={card.id}
-              className="p-4 bg-neutral-50 rounded-lg border border-neutral-200"
-            >
+            <div key={card.id} className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="font-semibold text-neutral-900">{card.name}</h3>
@@ -46,7 +43,9 @@ export default function CreditCardTracker({ creditCards }: CreditCardTrackerProp
                     Balance: <span className="font-medium">{formatCurrency(card.balance)}</span>
                   </p>
                 </div>
-                <div className={`px-3 py-1 rounded-md border text-sm font-medium ${getUtilizationColor(card.utilizationPercentage)}`}>
+                <div
+                  className={`px-3 py-1 rounded-md border text-sm font-medium ${getUtilizationColor(card.utilizationPercentage)}`}
+                >
                   {card.utilizationPercentage.toFixed(1)}% Used
                 </div>
               </div>
@@ -91,7 +90,8 @@ export default function CreditCardTracker({ creditCards }: CreditCardTrackerProp
 
       <div className="mt-4 p-3 bg-primary-50 rounded-lg border border-primary-200">
         <p className="text-sm font-medium text-primary-900">
-          💡 Tip: Pay off {sortedCards[0]?.name} first - due in {getDaysUntil(sortedCards[0]?.dueDate)} days
+          💡 Tip: Pay off {sortedCards[0]?.name} first - due in{' '}
+          {getDaysUntil(sortedCards[0]?.dueDate)} days
         </p>
       </div>
     </div>

@@ -37,18 +37,14 @@ export default function AccountsSummary({ accounts }: AccountsSummaryProps): JSX
                 <p className="text-sm text-neutral-500 capitalize">{account.type}</p>
               </div>
             </div>
-            <p className="font-semibold text-neutral-900">
-              {formatCurrency(account.balance)}
-            </p>
+            <p className="font-semibold text-neutral-900">{formatCurrency(account.balance)}</p>
           </div>
         ))}
       </div>
       <div className="mt-4 pt-4 border-t border-neutral-200">
         <div className="flex items-center justify-between">
           <p className="font-semibold text-neutral-900">Total</p>
-          <p className="text-xl font-bold text-primary-600">
-            {formatCurrency(total)}
-          </p>
+          <p className="text-xl font-bold text-primary-600">{formatCurrency(total)}</p>
         </div>
       </div>
     </div>

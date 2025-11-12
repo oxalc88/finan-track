@@ -1,4 +1,12 @@
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { formatCurrency } from '../lib/formatters'
 import type { Debt } from '../types'
 
@@ -73,10 +81,7 @@ export default function DebtOverview({ debts }: DebtOverviewProps): JSX.Element 
       <div className="space-y-2">
         <h3 className="text-sm font-semibold text-neutral-700 mb-3">Debt Details</h3>
         {debts.map((debt) => (
-          <div
-            key={debt.id}
-            className="p-3 bg-neutral-50 rounded-lg border border-neutral-200"
-          >
+          <div key={debt.id} className="p-3 bg-neutral-50 rounded-lg border border-neutral-200">
             <div className="flex items-center justify-between mb-2">
               <p className="font-medium text-neutral-900">{debt.name}</p>
               <p className="font-semibold text-neutral-900">{formatCurrency(debt.balance)}</p>

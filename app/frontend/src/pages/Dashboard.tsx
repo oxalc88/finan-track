@@ -1,12 +1,12 @@
-import { useDashboard } from '../hooks/useDashboard'
-import DashboardHeader from '../components/DashboardHeader'
-import OverviewCards from '../components/OverviewCards'
 import AccountsSummary from '../components/AccountsSummary'
-import InvestmentsSummary from '../components/InvestmentsSummary'
-import DebtOverview from '../components/DebtOverview'
-import CreditCardTracker from '../components/CreditCardTracker'
 import CashFlowInsights from '../components/CashFlowInsights'
+import CreditCardTracker from '../components/CreditCardTracker'
+import DashboardHeader from '../components/DashboardHeader'
+import DebtOverview from '../components/DebtOverview'
+import InvestmentsSummary from '../components/InvestmentsSummary'
 import NotificationsAlerts from '../components/NotificationsAlerts'
+import OverviewCards from '../components/OverviewCards'
+import { useDashboard } from '../hooks/useDashboard'
 
 export default function Dashboard(): JSX.Element {
   const { data, isLoading, error } = useDashboard()
@@ -61,10 +61,7 @@ export default function Dashboard(): JSX.Element {
 
         {/* Cash Flow Insights */}
         <section className="mb-8">
-          <CashFlowInsights
-            cashFlow={data.cashFlow}
-            expenseCategories={data.expenseCategories}
-          />
+          <CashFlowInsights cashFlow={data.cashFlow} expenseCategories={data.expenseCategories} />
         </section>
 
         {/* Notifications and Alerts */}

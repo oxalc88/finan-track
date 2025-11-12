@@ -24,17 +24,20 @@ interface StatCardProps {
 
 function StatCard({ label, value, change, variant = 'default' }: StatCardProps): JSX.Element {
   const isPositive = change > 0
-  const changeColor = variant === 'danger'
-    ? (isPositive ? 'text-error-600' : 'text-success-600')
-    : (isPositive ? 'text-success-600' : 'text-error-600')
+  const changeColor =
+    variant === 'danger'
+      ? isPositive
+        ? 'text-error-600'
+        : 'text-success-600'
+      : isPositive
+        ? 'text-success-600'
+        : 'text-error-600'
 
   return (
     <div className="stat-card">
       <p className="stat-label">{label}</p>
       <p className="stat-value">{formatCurrency(value)}</p>
-      <p className={`stat-change ${changeColor}`}>
-        {formatPercentage(change)}
-      </p>
+      <p className={`stat-change ${changeColor}`}>{formatPercentage(change)}</p>
     </div>
   )
 }

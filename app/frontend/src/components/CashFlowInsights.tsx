@@ -1,4 +1,16 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { formatCurrency } from '../lib/formatters'
 import type { CashFlowData, ExpenseCategory } from '../types'
 
@@ -18,7 +30,10 @@ const EXPENSE_COLORS = [
   '#ec4899',
 ]
 
-export default function CashFlowInsights({ cashFlow, expenseCategories }: CashFlowInsightsProps): JSX.Element {
+export default function CashFlowInsights({
+  cashFlow,
+  expenseCategories,
+}: CashFlowInsightsProps): JSX.Element {
   return (
     <div className="card">
       <h2 className="card-header">Cash Flow Insights</h2>
@@ -56,8 +71,11 @@ export default function CashFlowInsights({ cashFlow, expenseCategories }: CashFl
                   dataKey="amount"
                   label={({ category, percentage }) => `${category} ${percentage}%`}
                 >
-                  {expenseCategories.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={EXPENSE_COLORS[index % EXPENSE_COLORS.length]} />
+                  {expenseCategories.map((category, index) => (
+                    <Cell
+                      key={category.category}
+                      fill={EXPENSE_COLORS[index % EXPENSE_COLORS.length]}
+                    />
                   ))}
                 </Pie>
                 <Tooltip formatter={(value) => formatCurrency(Number(value))} />

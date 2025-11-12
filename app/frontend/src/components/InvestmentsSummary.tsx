@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts'
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { formatCurrency, formatPercentage } from '../lib/formatters'
 import type { Investment } from '../types'
 
@@ -46,10 +46,10 @@ export default function InvestmentsSummary({ investments }: InvestmentsSummaryPr
               </div>
             </div>
             <div className="text-right">
-              <p className="font-semibold text-neutral-900">
-                {formatCurrency(investment.value)}
-              </p>
-              <p className={`text-sm ${investment.gain >= 0 ? 'text-success-600' : 'text-error-600'}`}>
+              <p className="font-semibold text-neutral-900">{formatCurrency(investment.value)}</p>
+              <p
+                className={`text-sm ${investment.gain >= 0 ? 'text-success-600' : 'text-error-600'}`}
+              >
                 {formatPercentage(investment.gainPercentage)}
               </p>
             </div>
@@ -65,7 +65,9 @@ export default function InvestmentsSummary({ investments }: InvestmentsSummaryPr
           </div>
           <div className="text-right">
             <p className="text-sm text-neutral-600">Total Gain/Loss</p>
-            <p className={`text-xl font-bold ${totalGain >= 0 ? 'text-success-600' : 'text-error-600'}`}>
+            <p
+              className={`text-xl font-bold ${totalGain >= 0 ? 'text-success-600' : 'text-error-600'}`}
+            >
               {formatCurrency(totalGain)}
             </p>
           </div>
@@ -85,8 +87,8 @@ export default function InvestmentsSummary({ investments }: InvestmentsSummaryPr
               dataKey="value"
               label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
             >
-              {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[entry.type]} />
+              {chartData.map((entry) => (
+                <Cell key={entry.type} fill={COLORS[entry.type]} />
               ))}
             </Pie>
             <Tooltip formatter={(value) => formatCurrency(Number(value))} />
