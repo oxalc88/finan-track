@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(npm test)",
+      "Bash(npm run:*)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git log:*)",
+      "Read(**/*)",
+      "Grep(**/*)",
+      "Glob(**/*)"
+    ],
+    "deny": [
+      "Write(*.env)",
+      "Write(.env.*)",
+      "Edit(*.env)",
+      "Edit(.env.*)",
+      "Edit(.git/*)"
+    ]
+  }
+}

@@ -133,17 +133,11 @@ The theme is loaded at build time and generates CSS custom properties. After mod
 
 ## Documentation
 
-### Architecture Guides
-- **[LAYERED_ARCHITECTURE.md](./LAYERED_ARCHITECTURE.md)** - Main architecture overview (functional, layered approach)
-- **[ARCHITECTURE_COMPARISON.md](./docs/ARCHITECTURE_COMPARISON.md)** - Comparison of different architectural patterns
-- **[docs/PHASE_1_LAYERED.md](./docs/PHASE_1_LAYERED.md)** - Detailed Phase 1 implementation guide
-- **[docs/EXAMPLE_CODE.md](./docs/EXAMPLE_CODE.md)** - Working code examples
-
-### Legacy Docs (Hexagonal Architecture - Not Recommended for Solo Dev)
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Hexagonal architecture (over-engineered)
-- **[IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md)** - Original plan (hexagonal)
-
-**Recommendation:** Start with `LAYERED_ARCHITECTURE.md` for a pragmatic, solo-developer-friendly approach.
+- **[LAYERED_ARCHITECTURE.md](./LAYERED_ARCHITECTURE.md)** - Main architecture overview (start here)
+- **[docs/PHASE_1_LAYERED.md](./docs/PHASE_1_LAYERED.md)** - Detailed implementation guide
+- **[docs/ARCHITECTURE_COMPARISON.md](./docs/ARCHITECTURE_COMPARISON.md)** - Why we chose this architecture
+- **[docs/APP_INFRA_SEPARATION.md](./docs/APP_INFRA_SEPARATION.md)** - Application vs infrastructure separation
+- **[docs/ULTRACITE_SETUP.md](./docs/ULTRACITE_SETUP.md)** - Code quality and linting setup
 
 ## Development Workflow
 
@@ -264,17 +258,15 @@ See [docs/ULTRACITE_SETUP.md](./docs/ULTRACITE_SETUP.md) for detailed guide.
 
 ## Why This Architecture?
 
-### Layered Functional vs. Hexagonal
+We chose **layered functional architecture** because it's:
 
-We chose **layered functional architecture** over hexagonal (ports & adapters) because:
-
-- ✅ **3x less code** for the same features
-- ✅ **Faster to build** as a solo developer
-- ✅ **Easier to understand** and maintain
-- ✅ **Still cloud-agnostic** via configuration
+- ✅ **Simple and pragmatic** - Perfect for solo developers
+- ✅ **Easy to understand** and maintain
+- ✅ **Cloud-agnostic** via configuration
 - ✅ **Fully testable** with simple mocks
+- ✅ **Fast to build** - Focus on features, not abstractions
 
-See [docs/ARCHITECTURE_COMPARISON.md](./docs/ARCHITECTURE_COMPARISON.md) for detailed comparison.
+See [docs/ARCHITECTURE_COMPARISON.md](./docs/ARCHITECTURE_COMPARISON.md) for details.
 
 ### Cloud-Agnostic Without Over-Engineering
 
