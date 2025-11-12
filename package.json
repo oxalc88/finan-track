@@ -1,0 +1,61 @@
+{
+  "name": "finan-track",
+  "version": "1.0.0",
+  "description": "Cloud-agnostic invoice processing and financial tracking application",
+  "type": "module",
+  "main": "dist/api/server.js",
+  "scripts": {
+    "dev": "tsx watch app/api/server.ts",
+    "dev:worker": "tsx watch app/jobs/worker.ts",
+    "dev:all": "docker compose -f deployments/docker/docker-compose.yml up -d",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/api/server.js",
+    "start:worker": "node dist/jobs/worker.js",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "format": "ultracite format .",
+    "lint": "ultracite check .",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "migrate": "node -r dotenv/config migrations/run.js",
+    "seed": "tsx app/utils/seed.ts",
+    "docker:up": "docker compose -f deployments/docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f deployments/docker/docker-compose.yml down",
+    "docker:build": "docker build -t finan-track ."
+  },
+  "keywords": [
+    "invoice",
+    "ocr",
+    "financial-tracking",
+    "whatsapp",
+    "cloud-agnostic"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.699.0",
+    "@aws-sdk/client-sqs": "^3.699.0",
+    "@fastify/cors": "^10.0.1",
+    "@fastify/multipart": "^9.0.1",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.0",
+    "pg": "^8.13.1",
+    "pino": "^9.5.0",
+    "pino-pretty": "^13.0.0",
+    "tesseract.js": "^5.1.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/pg": "^8.11.10",
+    "@vitest/coverage-v8": "^2.1.8",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "ultracite": "^0.4.0",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
