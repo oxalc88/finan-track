@@ -1,33 +1,51 @@
 # Financial Dashboard Screenshots
 
-This folder contains screenshots of the financial dashboard implementation.
+This folder contains screenshots of the financial dashboard implementation captured using Playwright.
 
-## Screenshots
+## Available Screenshots
 
-Due to browser compatibility issues in the current environment, screenshots could not be automatically generated. However, the dashboard is fully functional and can be viewed by running:
+All screenshots have been successfully captured and are available in this directory:
 
-```bash
-cd app/frontend
-npm install
-npm run dev
-```
+### Desktop Views (1920x1080)
 
-Then visit http://localhost:3000 in your browser.
+1. **01-full-dashboard.png** (295KB)
+   - Complete dashboard overview with all sections
+   - Shows header, overview cards, accounts, investments, debt, credit cards, cash flow, and notifications
 
-## Dashboard Sections
+2. **02-overview-cards.png** (11KB)
+   - Overview cards section displaying Cash Balance, Total Investments, Total Debt, and Net Worth
+   - Shows percentage changes for each metric
 
-The implemented dashboard includes:
+3. **03-accounts-investments.png** (70KB)
+   - Side-by-side view of Accounts Summary and Investments Summary
+   - Includes investment pie chart showing asset allocation
 
-1. **Full Dashboard View** - Complete overview with all sections
-2. **Overview Cards** - Cash Balance, Investments, Debt, Net Worth with % changes
-3. **Accounts & Investments** - Bank accounts and investment portfolio with pie charts
-4. **Debt & Credit Cards** - Debt tracking and credit card payment tracker
-5. **Cash Flow Insights** - Income vs expenses charts and expense breakdown
-6. **Notifications & Alerts** - Bill reminders and payment alerts
-7. **Mobile View** - Fully responsive mobile layout (375px)
-8. **Tablet View** - Tablet-optimized layout (768px)
-9. **Desktop View** - Full desktop experience with hover states
-10. **Chart Visualizations** - Interactive charts using Recharts
+4. **04-debt-credit-cards.png** (89KB)
+   - Debt Overview with trend graph and Credit Card Payment Tracker
+   - Shows short-term and long-term debt breakdown
+   - Credit card utilization and due dates
+
+5. **05-cash-flow-insights.png** (61KB)
+   - Cash Flow Insights with Income vs Expenses chart
+   - Expense category breakdown pie chart
+   - Detailed category listing with percentages
+
+6. **06-notifications-alerts.png** (41KB)
+   - Notifications & Alerts section
+   - Unread and read notifications with priority indicators
+   - Bill reminders and payment confirmations
+
+### Responsive Views
+
+7. **07-mobile-view.png** (260KB)
+   - Full mobile view (375px width)
+   - Demonstrates responsive design for mobile devices
+   - All sections adapt to narrow viewport
+
+8. **08-tablet-view.png** (258KB)
+   - Full tablet view (768px width)
+   - Shows tablet-optimized layout
+   - Grid adjustments for medium screens
 
 ## Features Demonstrated
 
@@ -37,33 +55,42 @@ The implemented dashboard includes:
 - ✅ Color-coded status indicators
 - ✅ Priority-based notifications
 - ✅ Credit utilization warnings
-- ✅ Hover states and transitions
 - ✅ Accessibility features (ARIA, semantic HTML)
 - ✅ Theme integration from theme.config.json
 - ✅ TypeScript type safety
 - ✅ Biome code quality enforcement
 
-## To Generate Screenshots Manually
+## Regenerating Screenshots
 
-Run the dashboard and use your browser's screenshot tool:
+To regenerate screenshots, run:
 
 ```bash
 cd app/frontend
+npm run dev &
+node capture-screenshots.mjs
+```
+
+The script will automatically capture all dashboard views and save them to this directory.
+
+## Viewing the Live Dashboard
+
+To view the dashboard interactively:
+
+```bash
+cd app/frontend
+npm install
 npm run dev
 ```
 
-Then use browser dev tools to capture screenshots:
-- Chrome: F12 → More tools → Capture screenshot
-- Firefox: F12 → Screenshot button
-- Or use browser extensions for full-page screenshots
+Then visit http://localhost:3000 in your browser.
 
-## Test the Dashboard
+## Testing
 
-Run the functional tests to verify all features:
+Run the full Playwright test suite:
 
 ```bash
 cd app/frontend
 npm test
 ```
 
-This will run the full Playwright test suite that validates all dashboard functionality.
+This validates all dashboard functionality including data display, charts, and responsive behavior.
