@@ -1,3 +1,5 @@
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
 import { formatCurrency, getDaysUntil } from '../lib/formatters'
 import type { Account, CreditCard, Notification } from '../types'
 
@@ -68,25 +70,25 @@ export default function MobileDashboard({
     ...highUtilizationCards,
   ]
 
-  const getStatusColor = (status: PriorityCard['status']) => {
+  const getStatusVariant = (status: PriorityCard['status']) => {
     switch (status) {
       case 'urgent':
-        return 'border-error-500 bg-error-50'
+        return 'error' as const
       case 'warning':
-        return 'border-warning-500 bg-warning-50'
+        return 'warning' as const
       default:
-        return 'border-neutral-200 bg-white'
+        return 'secondary' as const
     }
   }
 
-  const getStatusTextColor = (status: PriorityCard['status']) => {
+  const getCardClassName = (status: PriorityCard['status']) => {
     switch (status) {
       case 'urgent':
-        return 'text-error-900'
+        return 'border-error-300 bg-error-50/50'
       case 'warning':
-        return 'text-warning-900'
+        return 'border-warning-300 bg-warning-50/50'
       default:
-        return 'text-neutral-900'
+        return ''
     }
   }
 
@@ -94,84 +96,92 @@ export default function MobileDashboard({
     <div className="pb-20">
       {/* Priority Section */}
       <section className="mb-6">
-        <h2 className="text-lg font-semibold text-neutral-900 mb-3 px-4">Priority</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-3 px-4">Priority</h2>
         <div className="space-y-3 px-4">
           {priorityCards.map((card) => (
-            <button
+            <Card
               key={card.id}
-              type="button"
+              className={`cursor-pointer active:scale-98 transition-transform hover:shadow-md ${getCardClassName(card.status)}`}
               onClick={() => onNavigate(card.section)}
-              className={`w-full text-left p-4 rounded-lg border-2 ${getStatusColor(card.status)} active:scale-98 transition-transform`}
             >
-              <div className="flex items-start justify-between">
-                <div className="flex items-start gap-3 flex-1">
-                  <span className="text-3xl">{card.icon}</span>
-                  <div className="flex-1">
-                    <h3 className={`font-semibold ${getStatusTextColor(card.status)}`}>
-                      {card.title}
-                    </h3>
-                    <p className="text-sm text-neutral-600 mt-1">{card.subtitle}</p>
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3 flex-1">
+                    <span className="text-3xl">{card.icon}</span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-semibold text-foreground">{card.title}</h3>
+                        {card.status !== 'normal' && (
+                          <Badge variant={getStatusVariant(card.status)} className="text-xs">
+                            {card.status.toUpperCase()}
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground">{card.subtitle}</p>
+                    </div>
                   </div>
+                  {card.value && (
+                    <p className="text-lg font-bold text-foreground ml-2">{card.value}</p>
+                  )}
                 </div>
-                {card.value && (
-                  <p className={`text-lg font-bold ${getStatusTextColor(card.status)} ml-2`}>
-                    {card.value}
-                  </p>
-                )}
-              </div>
-            </button>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </section>
 
       {/* Quick Access Cards */}
       <section className="mb-6">
-        <h2 className="text-lg font-semibold text-neutral-900 mb-3 px-4">Quick Access</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-3 px-4">Quick Access</h2>
         <div className="grid grid-cols-2 gap-3 px-4">
-          <button
-            type="button"
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent"
             onClick={() => onNavigate('investments')}
-            className="p-4 bg-white rounded-lg border border-neutral-200 active:bg-neutral-50 transition-colors"
           >
-            <div className="text-3xl mb-2">📈</div>
-            <p className="font-semibold text-neutral-900">Investments</p>
-            <p className="text-xs text-neutral-500 mt-1">Portfolio</p>
-          </button>
+            <CardContent className="p-4">
+              <div className="text-3xl mb-2">📈</div>
+              <p className="font-semibold text-foreground">Investments</p>
+              <p className="text-xs text-muted-foreground mt-1">Portfolio</p>
+            </CardContent>
+          </Card>
 
-          <button
-            type="button"
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent"
             onClick={() => onNavigate('debt')}
-            className="p-4 bg-white rounded-lg border border-neutral-200 active:bg-neutral-50 transition-colors"
           >
-            <div className="text-3xl mb-2">📊</div>
-            <p className="font-semibold text-neutral-900">Debt</p>
-            <p className="text-xs text-neutral-500 mt-1">Overview</p>
-          </button>
+            <CardContent className="p-4">
+              <div className="text-3xl mb-2">📊</div>
+              <p className="font-semibold text-foreground">Debt</p>
+              <p className="text-xs text-muted-foreground mt-1">Overview</p>
+            </CardContent>
+          </Card>
 
-          <button
-            type="button"
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent"
             onClick={() => onNavigate('cash-flow')}
-            className="p-4 bg-white rounded-lg border border-neutral-200 active:bg-neutral-50 transition-colors"
           >
-            <div className="text-3xl mb-2">💸</div>
-            <p className="font-semibold text-neutral-900">Cash Flow</p>
-            <p className="text-xs text-neutral-500 mt-1">Insights</p>
-          </button>
+            <CardContent className="p-4">
+              <div className="text-3xl mb-2">💸</div>
+              <p className="font-semibold text-foreground">Cash Flow</p>
+              <p className="text-xs text-muted-foreground mt-1">Insights</p>
+            </CardContent>
+          </Card>
 
-          <button
-            type="button"
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent relative"
             onClick={() => onNavigate('notifications')}
-            className="p-4 bg-white rounded-lg border border-neutral-200 active:bg-neutral-50 transition-colors relative"
           >
-            <div className="text-3xl mb-2">🔔</div>
-            <p className="font-semibold text-neutral-900">Alerts</p>
-            <p className="text-xs text-neutral-500 mt-1">Notifications</p>
-            {notifications.filter((n) => !n.read).length > 0 && (
-              <span className="absolute top-2 right-2 w-5 h-5 bg-error-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                {notifications.filter((n) => !n.read).length}
-              </span>
-            )}
-          </button>
+            <CardContent className="p-4">
+              <div className="text-3xl mb-2">🔔</div>
+              <p className="font-semibold text-foreground">Alerts</p>
+              <p className="text-xs text-muted-foreground mt-1">Notifications</p>
+              {notifications.filter((n) => !n.read).length > 0 && (
+                <Badge variant="error" className="absolute top-2 right-2">
+                  {notifications.filter((n) => !n.read).length}
+                </Badge>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </section>
     </div>

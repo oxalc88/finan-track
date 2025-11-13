@@ -1,3 +1,5 @@
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatCurrency, formatPercentage } from '../lib/formatters'
 
 interface OverviewCardsProps {
@@ -24,21 +26,27 @@ interface StatCardProps {
 
 function StatCard({ label, value, change, variant = 'default' }: StatCardProps): JSX.Element {
   const isPositive = change > 0
-  const changeColor =
-    variant === 'danger'
-      ? isPositive
-        ? 'text-error-600'
-        : 'text-success-600'
-      : isPositive
-        ? 'text-success-600'
-        : 'text-error-600'
+  const isInverted = variant === 'danger' // For debt, decrease is good
+
+  const getBadgeVariant = () => {
+    if (isInverted) {
+      return isPositive ? 'error' : 'success'
+    }
+    return isPositive ? 'success' : 'error'
+  }
 
   return (
-    <div className="stat-card">
-      <p className="stat-label">{label}</p>
-      <p className="stat-value">{formatCurrency(value)}</p>
-      <p className={`stat-change ${changeColor}`}>{formatPercentage(change)}</p>
-    </div>
+    <Card className="hover:shadow-lg transition-shadow">
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-2xl font-bold text-foreground mb-2">{formatCurrency(value)}</p>
+        <Badge variant={getBadgeVariant()} className="text-xs">
+          {isPositive ? '↑' : '↓'} {formatPercentage(Math.abs(change))}
+        </Badge>
+      </CardContent>
+    </Card>
   )
 }
 
