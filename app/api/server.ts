@@ -12,6 +12,7 @@ import { initStorage } from '../lib/storage.js';
 import { initLogger } from '../utils/logger.js';
 import { invoiceRoutes } from './routes/invoices.js';
 import { transactionRoutes } from './routes/transactions.js';
+import { dashboardRoutes } from './routes/dashboard.js';
 
 /**
  * Create and configure the Fastify server
@@ -54,6 +55,7 @@ export async function createServer() {
   });
 
   // Register API routes
+  await app.register(dashboardRoutes, { prefix: '/api/dashboard' });
   await app.register(invoiceRoutes, { prefix: '/api/invoices' });
   await app.register(transactionRoutes, { prefix: '/api/transactions' });
 
