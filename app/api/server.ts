@@ -14,6 +14,13 @@ import { invoiceRoutes } from './routes/invoices.js';
 import { transactionRoutes } from './routes/transactions.js';
 import { dashboardRoutes } from './routes/dashboard.js';
 import { whatsappRoutes } from './routes/whatsapp.js';
+import { accountRoutes } from './routes/accounts.js';
+import { investmentRoutes } from './routes/investments.js';
+import { debtRoutes } from './routes/debts.js';
+import { creditCardRoutes } from './routes/credit-cards.js';
+import { categoryRoutes } from './routes/categories.js';
+import { alertRoutes } from './routes/alerts.js';
+import { userRoutes } from './routes/users.js';
 
 /**
  * Create and configure the Fastify server
@@ -60,6 +67,13 @@ export async function createServer() {
   await app.register(invoiceRoutes, { prefix: '/api/invoices' });
   await app.register(transactionRoutes, { prefix: '/api/transactions' });
   await app.register(whatsappRoutes, { prefix: '/api/whatsapp' });
+  await app.register(userRoutes, { prefix: '/api/users' });
+  await app.register(accountRoutes, { prefix: '/api/accounts' });
+  await app.register(investmentRoutes, { prefix: '/api/investments' });
+  await app.register(debtRoutes, { prefix: '/api/debts' });
+  await app.register(creditCardRoutes, { prefix: '/api/credit-cards' });
+  await app.register(categoryRoutes, { prefix: '/api/categories' });
+  await app.register(alertRoutes, { prefix: '/api/alerts' });
 
   // Error handler
   app.setErrorHandler((error, request, reply) => {
