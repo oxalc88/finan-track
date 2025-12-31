@@ -22,8 +22,7 @@
     "types": ["node", "vitest/globals"]
   },
   "include": [
-    "**/*",
-    "../migrations/**/*"
+    "**/*"
   ],
   "exclude": [
     "node_modules",

@@ -17,7 +17,7 @@
     "format": "biome format --write .",
     "lint": "biome check .",
     "check": "npm run typecheck && npm run lint && npm run test",
-    "migrate": "node -r dotenv/config ../migrations/run.js",
+    "migrate": "node -r dotenv/config migrations/run.js",
     "seed": "tsx utils/seed.ts"
   },
   "keywords": [
