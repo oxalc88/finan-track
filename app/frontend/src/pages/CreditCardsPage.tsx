@@ -1,18 +1,18 @@
-import CreditCardTracker from '../components/CreditCardTracker'
-import MobileHeader from '../components/MobileHeader'
-import { useDashboard } from '../hooks/useDashboard'
-import { useIsMobile } from '../hooks/useIsMobile'
+import CreditCardTracker from '../components/CreditCardTracker';
+import MobileHeader from '../components/MobileHeader';
+import { useDashboard } from '../hooks/useDashboard';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function CreditCardsPage(): JSX.Element {
-  const { data, isLoading } = useDashboard()
-  const isMobile = useIsMobile()
+  const { data, isLoading } = useDashboard();
+  const isMobile = useIsMobile();
 
   if (isLoading || !data) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p>Loading...</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -22,5 +22,5 @@ export default function CreditCardsPage(): JSX.Element {
         <CreditCardTracker creditCards={data.creditCards} />
       </div>
     </div>
-  )
+  );
 }

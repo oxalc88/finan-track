@@ -5,7 +5,7 @@
 
 import { createWorker } from 'tesseract.js';
 import { getConfig } from '../config/env.js';
-import type { OcrResult, InvoiceData } from '../types/ocr.js';
+import type { InvoiceData, OcrResult } from '../types/ocr.js';
 
 /**
  * Process an image with OCR
@@ -129,10 +129,7 @@ function extractInvoiceData(text: string): InvoiceData {
   }
 
   // Extract currency (default to USD)
-  const currencyPatterns = [
-    /\b(USD|EUR|GBP|JPY|CAD|AUD)\b/i,
-    /\$|€|£|¥/,
-  ];
+  const currencyPatterns = [/\b(USD|EUR|GBP|JPY|CAD|AUD)\b/i, /\$|€|£|¥/];
 
   for (const pattern of currencyPatterns) {
     const match = text.match(pattern);
@@ -142,7 +139,7 @@ function extractInvoiceData(text: string): InvoiceData {
       } else {
         // Map symbols to currency codes
         const symbolMap: Record<string, string> = {
-          '$': 'USD',
+          $: 'USD',
           '€': 'EUR',
           '£': 'GBP',
           '¥': 'JPY',

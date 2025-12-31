@@ -1,18 +1,18 @@
-import CashFlowInsights from '../components/CashFlowInsights'
-import MobileHeader from '../components/MobileHeader'
-import { useDashboard } from '../hooks/useDashboard'
-import { useIsMobile } from '../hooks/useIsMobile'
+import CashFlowInsights from '../components/CashFlowInsights';
+import MobileHeader from '../components/MobileHeader';
+import { useDashboard } from '../hooks/useDashboard';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function CashFlowPage(): JSX.Element {
-  const { data, isLoading } = useDashboard()
-  const isMobile = useIsMobile()
+  const { data, isLoading } = useDashboard();
+  const isMobile = useIsMobile();
 
   if (isLoading || !data) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p>Loading...</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -22,5 +22,5 @@ export default function CashFlowPage(): JSX.Element {
         <CashFlowInsights cashFlow={data.cashFlow} expenseCategories={data.expenseCategories} />
       </div>
     </div>
-  )
+  );
 }

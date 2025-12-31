@@ -10,13 +10,13 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from 'recharts'
-import { formatCurrency } from '../lib/formatters'
-import type { CashFlowData, ExpenseCategory } from '../types'
+} from 'recharts';
+import { formatCurrency } from '../lib/formatters';
+import type { CashFlowData, ExpenseCategory } from '../types';
 
 interface CashFlowInsightsProps {
-  cashFlow: CashFlowData[]
-  expenseCategories: ExpenseCategory[]
+  cashFlow: CashFlowData[];
+  expenseCategories: ExpenseCategory[];
 }
 
 const EXPENSE_COLORS = [
@@ -28,7 +28,7 @@ const EXPENSE_COLORS = [
   '#06b6d4',
   '#8b5cf6',
   '#ec4899',
-]
+];
 
 export default function CashFlowInsights({
   cashFlow,
@@ -110,5 +110,5 @@ export default function CashFlowInsights({
         </div>
       </div>
     </div>
-  )
+  );
 }

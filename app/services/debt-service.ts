@@ -33,11 +33,7 @@ export async function getDebtById(id: string) {
 /**
  * List debts for a user
  */
-export async function listUserDebts(
-  userId: string,
-  type?: DebtTermType,
-  activeOnly = true
-) {
+export async function listUserDebts(userId: string, type?: DebtTermType, activeOnly = true) {
   return debtRepo.listDebtsByUser(userId, { type, activeOnly });
 }
 

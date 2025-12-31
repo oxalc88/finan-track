@@ -1,20 +1,20 @@
-import { format } from 'date-fns'
-import { useNavigate } from 'react-router-dom'
-import AccountsSummary from '../components/AccountsSummary'
-import CashFlowInsights from '../components/CashFlowInsights'
-import CreditCardTracker from '../components/CreditCardTracker'
-import DebtOverview from '../components/DebtOverview'
-import InvestmentsSummary from '../components/InvestmentsSummary'
-import MobileDashboard from '../components/MobileDashboard'
-import NotificationsAlerts from '../components/NotificationsAlerts'
-import OverviewCards from '../components/OverviewCards'
-import { useDashboard } from '../hooks/useDashboard'
-import { useIsMobile } from '../hooks/useIsMobile'
+import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
+import AccountsSummary from '../components/AccountsSummary';
+import CashFlowInsights from '../components/CashFlowInsights';
+import CreditCardTracker from '../components/CreditCardTracker';
+import DebtOverview from '../components/DebtOverview';
+import InvestmentsSummary from '../components/InvestmentsSummary';
+import MobileDashboard from '../components/MobileDashboard';
+import NotificationsAlerts from '../components/NotificationsAlerts';
+import OverviewCards from '../components/OverviewCards';
+import { useDashboard } from '../hooks/useDashboard';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function DashboardHome(): JSX.Element {
-  const { data, isLoading, error } = useDashboard()
-  const isMobile = useIsMobile()
-  const navigate = useNavigate()
+  const { data, isLoading, error } = useDashboard();
+  const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -24,7 +24,7 @@ export default function DashboardHome(): JSX.Element {
           <p className="text-neutral-600">Loading dashboard...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -35,16 +35,16 @@ export default function DashboardHome(): JSX.Element {
           <p className="text-neutral-600">{(error as Error).message}</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (!data) {
-    return <div />
+    return <div />;
   }
 
   const handleNavigate = (section: string) => {
-    navigate(`/${section}`)
-  }
+    navigate(`/${section}`);
+  };
 
   // Mobile view - card-based interface
   if (isMobile) {
@@ -66,7 +66,7 @@ export default function DashboardHome(): JSX.Element {
           />
         </main>
       </div>
-    )
+    );
   }
 
   // Desktop view - full dashboard
@@ -120,5 +120,5 @@ export default function DashboardHome(): JSX.Element {
         </section>
       </main>
     </div>
-  )
+  );
 }

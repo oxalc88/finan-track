@@ -1,31 +1,31 @@
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatCurrency, getDaysUntil } from '../lib/formatters'
-import type { CreditCard } from '../types'
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatCurrency, getDaysUntil } from '../lib/formatters';
+import type { CreditCard } from '../types';
 
 interface CreditCardTrackerProps {
-  creditCards: CreditCard[]
+  creditCards: CreditCard[];
 }
 
 export default function CreditCardTracker({ creditCards }: CreditCardTrackerProps): JSX.Element {
   const sortedCards = [...creditCards].sort((a, b) => {
-    const daysA = getDaysUntil(a.dueDate)
-    const daysB = getDaysUntil(b.dueDate)
-    return daysA - daysB
-  })
+    const daysA = getDaysUntil(a.dueDate);
+    const daysB = getDaysUntil(b.dueDate);
+    return daysA - daysB;
+  });
 
   const getUtilizationVariant = (utilization: number) => {
-    if (utilization >= 30) return 'error' as const
-    if (utilization >= 20) return 'warning' as const
-    return 'success' as const
-  }
+    if (utilization >= 30) return 'error' as const;
+    if (utilization >= 20) return 'warning' as const;
+    return 'success' as const;
+  };
 
   const getDueDateVariant = (dueDate: string) => {
-    const days = getDaysUntil(dueDate)
-    if (days <= 3) return 'error' as const
-    if (days <= 7) return 'warning' as const
-    return 'secondary' as const
-  }
+    const days = getDaysUntil(dueDate);
+    if (days <= 3) return 'error' as const;
+    if (days <= 7) return 'warning' as const;
+    return 'secondary' as const;
+  };
 
   return (
     <Card>
@@ -35,8 +35,8 @@ export default function CreditCardTracker({ creditCards }: CreditCardTrackerProp
       <CardContent>
         <div className="space-y-4">
           {sortedCards.map((card) => {
-            const daysUntilDue = getDaysUntil(card.dueDate)
-            const availableCredit = card.creditLimit - card.balance
+            const daysUntilDue = getDaysUntil(card.dueDate);
+            const availableCredit = card.creditLimit - card.balance;
 
             return (
               <Card key={card.id} className="bg-muted/50">
@@ -88,7 +88,7 @@ export default function CreditCardTracker({ creditCards }: CreditCardTrackerProp
                   </div>
                 </CardContent>
               </Card>
-            )
+            );
           })}
         </div>
 
@@ -102,5 +102,5 @@ export default function CreditCardTracker({ creditCards }: CreditCardTrackerProp
         </Card>
       </CardContent>
     </Card>
-  )
+  );
 }

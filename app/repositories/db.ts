@@ -47,10 +47,7 @@ function getPool(): pg.Pool {
 /**
  * Execute a query and return all rows
  */
-export async function query<T = unknown>(
-  text: string,
-  params?: unknown[]
-): Promise<T[]> {
+export async function query<T = unknown>(text: string, params?: unknown[]): Promise<T[]> {
   const client = getPool();
   const result = await client.query(text, params);
   return result.rows as T[];
@@ -59,22 +56,17 @@ export async function query<T = unknown>(
 /**
  * Execute a query and return a single row (or null)
  */
-export async function queryOne<T = unknown>(
-  text: string,
-  params?: unknown[]
-): Promise<T | null> {
+export async function queryOne<T = unknown>(text: string, params?: unknown[]): Promise<T | null> {
   const client = getPool();
   const result = await client.query(text, params);
-  return result.rows[0] as T || null;
+  return (result.rows[0] as T) || null;
 }
 
 /**
  * Execute a transaction with multiple queries
  * Automatically commits on success or rolls back on error
  */
-export async function transaction<T>(
-  callback: (client: pg.PoolClient) => Promise<T>
-): Promise<T> {
+export async function transaction<T>(callback: (client: pg.PoolClient) => Promise<T>): Promise<T> {
   const client = await getPool().connect();
 
   try {

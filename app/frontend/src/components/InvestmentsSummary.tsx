@@ -1,9 +1,9 @@
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
-import { formatCurrency, formatPercentage } from '../lib/formatters'
-import type { Investment } from '../types'
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { formatCurrency, formatPercentage } from '../lib/formatters';
+import type { Investment } from '../types';
 
 interface InvestmentsSummaryProps {
-  investments: Investment[]
+  investments: Investment[];
 }
 
 const COLORS = {
@@ -11,17 +11,17 @@ const COLORS = {
   bonds: '#22c55e',
   real_estate: '#f59e0b',
   crypto: '#d946ef',
-}
+};
 
 export default function InvestmentsSummary({ investments }: InvestmentsSummaryProps): JSX.Element {
-  const total = investments.reduce((sum, inv) => sum + inv.value, 0)
-  const totalGain = investments.reduce((sum, inv) => sum + inv.gain, 0)
+  const total = investments.reduce((sum, inv) => sum + inv.value, 0);
+  const totalGain = investments.reduce((sum, inv) => sum + inv.gain, 0);
 
   const chartData = investments.map((inv) => ({
     name: inv.name,
     value: inv.value,
     type: inv.type,
-  }))
+  }));
 
   return (
     <div className="card">
@@ -97,5 +97,5 @@ export default function InvestmentsSummary({ investments }: InvestmentsSummaryPr
         </ResponsiveContainer>
       </div>
     </div>
-  )
+  );
 }

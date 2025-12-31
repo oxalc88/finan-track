@@ -2,7 +2,7 @@
  * Dashboard API routes
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as dashboardService from '../../services/dashboard-service.js';
 import type { ApiResponse } from '../../types/index.js';
 
@@ -16,10 +16,7 @@ export async function dashboardRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get(
     '/',
-    async (
-      request: FastifyRequest<{ Querystring: { user_id: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
       try {
         const { user_id } = request.query;
 
@@ -100,10 +97,7 @@ export async function dashboardRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get(
     '/upcoming',
-    async (
-      request: FastifyRequest<{ Querystring: { user_id: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
       try {
         const { user_id } = request.query;
 
@@ -136,10 +130,7 @@ export async function dashboardRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get(
     '/warnings',
-    async (
-      request: FastifyRequest<{ Querystring: { user_id: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
       try {
         const { user_id } = request.query;
 
@@ -172,10 +163,7 @@ export async function dashboardRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get(
     '/investments',
-    async (
-      request: FastifyRequest<{ Querystring: { user_id: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
       try {
         const { user_id } = request.query;
 
@@ -208,10 +196,7 @@ export async function dashboardRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get(
     '/credit-recommendations',
-    async (
-      request: FastifyRequest<{ Querystring: { user_id: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
       try {
         const { user_id } = request.query;
 
@@ -222,8 +207,7 @@ export async function dashboardRoutes(app: FastifyInstance): Promise<void> {
           } satisfies ApiResponse);
         }
 
-        const recommendations =
-          await dashboardService.getCreditCardRecommendation(user_id);
+        const recommendations = await dashboardService.getCreditCardRecommendation(user_id);
 
         return reply.send({
           success: true,
@@ -245,10 +229,7 @@ export async function dashboardRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get(
     '/accounts',
-    async (
-      request: FastifyRequest<{ Querystring: { user_id: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
       try {
         const { user_id } = request.query;
 

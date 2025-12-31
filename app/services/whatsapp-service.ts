@@ -3,18 +3,16 @@
  */
 
 import * as whatsapp from '../lib/whatsapp.js';
-import * as ocrService from './ocr-service.js';
 import * as userRepo from '../repositories/user-repository.js';
 import { getLogger } from '../utils/logger.js';
+import * as ocrService from './ocr-service.js';
 
 const logger = getLogger();
 
 /**
  * Handle incoming WhatsApp message
  */
-export async function handleIncomingMessage(
-  event: whatsapp.KapsoWebhookEvent
-): Promise<void> {
+export async function handleIncomingMessage(event: whatsapp.KapsoWebhookEvent): Promise<void> {
   try {
     // Only process message received events
     if (!whatsapp.isMessageReceivedEvent(event)) {
@@ -43,10 +41,7 @@ export async function handleIncomingMessage(
     }
 
     // Unsupported message type
-    await whatsapp.sendTextMessage(
-      customerPhone,
-      'Please send an image or PDF of your invoice.'
-    );
+    await whatsapp.sendTextMessage(customerPhone, 'Please send an image or PDF of your invoice.');
   } catch (error) {
     logger.error({ error }, 'Failed to handle WhatsApp message');
 
@@ -68,16 +63,10 @@ async function handleInvoiceImage(event: whatsapp.KapsoWebhookEvent): Promise<vo
 
   try {
     // Get or create user by phone number
-    const user = await getOrCreateUserByPhone(
-      customerPhone,
-      whatsapp.getCustomerName(event)
-    );
+    const user = await getOrCreateUserByPhone(customerPhone, whatsapp.getCustomerName(event));
 
     // Send acknowledgment
-    await whatsapp.sendTextMessage(
-      customerPhone,
-      '📸 Image received! Processing your invoice...'
-    );
+    await whatsapp.sendTextMessage(customerPhone, '📸 Image received! Processing your invoice...');
 
     // Download the image
     logger.info({ mediaId: image.id }, 'Downloading WhatsApp image');
@@ -131,10 +120,7 @@ async function handleInvoiceDocument(event: whatsapp.KapsoWebhookEvent): Promise
 
   try {
     // Get or create user by phone number
-    const user = await getOrCreateUserByPhone(
-      customerPhone,
-      whatsapp.getCustomerName(event)
-    );
+    const user = await getOrCreateUserByPhone(customerPhone, whatsapp.getCustomerName(event));
 
     // Send acknowledgment
     await whatsapp.sendTextMessage(
@@ -190,7 +176,7 @@ async function handleInvoiceDocument(event: whatsapp.KapsoWebhookEvent): Promise
  */
 async function handleTextMessage(event: whatsapp.KapsoWebhookEvent): Promise<void> {
   const customerPhone = whatsapp.getCustomerPhone(event);
-  const text = event.message.text!.body.toLowerCase().trim();
+  const text = event.message.text?.body.toLowerCase().trim();
 
   // Handle commands
   if (text === 'help' || text === 'start' || text === 'hi' || text === 'hello') {
@@ -268,7 +254,7 @@ async function waitForOcrProcessing(
     }
 
     // Wait before next poll
-    await new Promise(resolve => setTimeout(resolve, pollInterval));
+    await new Promise((resolve) => setTimeout(resolve, pollInterval));
   }
 
   throw new Error('OCR processing timeout');

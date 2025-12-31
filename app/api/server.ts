@@ -3,24 +3,24 @@
  */
 
 import 'dotenv/config';
-import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import multipart from '@fastify/multipart';
+import Fastify from 'fastify';
 import { loadConfig } from '../config/env.js';
-import { initDb, closeDb } from '../repositories/db.js';
 import { initStorage } from '../lib/storage.js';
+import { closeDb, initDb } from '../repositories/db.js';
 import { initLogger } from '../utils/logger.js';
+import { accountRoutes } from './routes/accounts.js';
+import { alertRoutes } from './routes/alerts.js';
+import { categoryRoutes } from './routes/categories.js';
+import { creditCardRoutes } from './routes/credit-cards.js';
+import { dashboardRoutes } from './routes/dashboard.js';
+import { debtRoutes } from './routes/debts.js';
+import { investmentRoutes } from './routes/investments.js';
 import { invoiceRoutes } from './routes/invoices.js';
 import { transactionRoutes } from './routes/transactions.js';
-import { dashboardRoutes } from './routes/dashboard.js';
-import { whatsappRoutes } from './routes/whatsapp.js';
-import { accountRoutes } from './routes/accounts.js';
-import { investmentRoutes } from './routes/investments.js';
-import { debtRoutes } from './routes/debts.js';
-import { creditCardRoutes } from './routes/credit-cards.js';
-import { categoryRoutes } from './routes/categories.js';
-import { alertRoutes } from './routes/alerts.js';
 import { userRoutes } from './routes/users.js';
+import { whatsappRoutes } from './routes/whatsapp.js';
 
 /**
  * Create and configure the Fastify server
@@ -119,9 +119,7 @@ async function start() {
       host: config.server.host,
     });
 
-    app.log.info(
-      `🚀 Server listening on http://${config.server.host}:${config.server.port}`
-    );
+    app.log.info(`🚀 Server listening on http://${config.server.host}:${config.server.port}`);
     app.log.info(`📝 Environment: ${config.server.env}`);
   } catch (error) {
     console.error('Failed to start server:', error);

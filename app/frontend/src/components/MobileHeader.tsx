@@ -1,12 +1,12 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 interface MobileHeaderProps {
-  title: string
-  showBack?: boolean
+  title: string;
+  showBack?: boolean;
 }
 
 export default function MobileHeader({ title, showBack = false }: MobileHeaderProps): JSX.Element {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <header className="bg-white border-b border-neutral-200 shadow-sm sticky top-0 z-10">
@@ -39,5 +39,5 @@ export default function MobileHeader({ title, showBack = false }: MobileHeaderPr
         </div>
       </div>
     </header>
-  )
+  );
 }

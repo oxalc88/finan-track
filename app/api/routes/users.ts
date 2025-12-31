@@ -44,7 +44,7 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
    * Get user by ID
    * GET /api/users/:id
    */
-  app.get<{ Params: { id: string } }>(
+  app.get(
     '/:id',
     async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
       try {
@@ -70,7 +70,7 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
         } satisfies ApiResponse);
       }
     }
-  });
+  );
 
   /**
    * Get user by email
@@ -119,7 +119,7 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
    * Update user
    * PATCH /api/users/:id
    */
-  app.patch<{ Params: { id: string } }>(
+  app.patch(
     '/:id',
     async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
       try {
@@ -164,7 +164,7 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
    * Delete user
    * DELETE /api/users/:id
    */
-  app.delete<{ Params: { id: string } }>(
+  app.delete(
     '/:id',
     async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
       try {

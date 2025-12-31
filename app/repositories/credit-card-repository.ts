@@ -2,8 +2,8 @@
  * Credit card repository - Data access layer for credit cards
  */
 
+import type { CreateCreditCardInput, CreditCard, UpdateCreditCardInput } from '../types/index.js';
 import { query, queryOne } from './db.js';
-import type { CreditCard, CreateCreditCardInput, UpdateCreditCardInput } from '../types/index.js';
 
 /**
  * Create a new credit card

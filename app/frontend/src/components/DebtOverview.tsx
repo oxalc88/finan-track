@@ -6,12 +6,12 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from 'recharts'
-import { formatCurrency } from '../lib/formatters'
-import type { Debt } from '../types'
+} from 'recharts';
+import { formatCurrency } from '../lib/formatters';
+import type { Debt } from '../types';
 
 interface DebtOverviewProps {
-  debts: Debt[]
+  debts: Debt[];
 }
 
 // Mock historical data for trend graph
@@ -22,16 +22,16 @@ const trendData = [
   { month: 'Aug', shortTerm: 2500, longTerm: 30500 },
   { month: 'Sep', shortTerm: 2450, longTerm: 30000 },
   { month: 'Oct', shortTerm: 2450, longTerm: 30000 },
-]
+];
 
 export default function DebtOverview({ debts }: DebtOverviewProps): JSX.Element {
   const shortTermDebt = debts
     .filter((d) => d.type === 'short_term')
-    .reduce((sum, d) => sum + d.balance, 0)
+    .reduce((sum, d) => sum + d.balance, 0);
 
   const longTermDebt = debts
     .filter((d) => d.type === 'long_term')
-    .reduce((sum, d) => sum + d.balance, 0)
+    .reduce((sum, d) => sum + d.balance, 0);
 
   return (
     <div className="card">
@@ -94,5 +94,5 @@ export default function DebtOverview({ debts }: DebtOverviewProps): JSX.Element 
         ))}
       </div>
     </div>
-  )
+  );
 }

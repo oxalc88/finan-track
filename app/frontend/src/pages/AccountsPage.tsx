@@ -1,18 +1,18 @@
-import AccountsSummary from '../components/AccountsSummary'
-import MobileHeader from '../components/MobileHeader'
-import { useDashboard } from '../hooks/useDashboard'
-import { useIsMobile } from '../hooks/useIsMobile'
+import AccountsSummary from '../components/AccountsSummary';
+import MobileHeader from '../components/MobileHeader';
+import { useDashboard } from '../hooks/useDashboard';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function AccountsPage(): JSX.Element {
-  const { data, isLoading } = useDashboard()
-  const isMobile = useIsMobile()
+  const { data, isLoading } = useDashboard();
+  const isMobile = useIsMobile();
 
   if (isLoading || !data) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p>Loading...</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -22,5 +22,5 @@ export default function AccountsPage(): JSX.Element {
         <AccountsSummary accounts={data.accounts} />
       </div>
     </div>
-  )
+  );
 }

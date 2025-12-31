@@ -3,12 +3,18 @@
  */
 
 import * as accountRepo from '../repositories/account-repository.js';
-import * as investmentRepo from '../repositories/investment-repository.js';
-import * as debtRepo from '../repositories/debt-repository.js';
-import * as creditCardRepo from '../repositories/credit-card-repository.js';
-import * as transactionRepo from '../repositories/transaction-repository.js';
 import * as alertRepo from '../repositories/alert-repository.js';
-import type { DashboardSummary, AccountSummary, InvestmentSummary, DebtSummary, CreditCardSummary } from '../types/index.js';
+import * as creditCardRepo from '../repositories/credit-card-repository.js';
+import * as debtRepo from '../repositories/debt-repository.js';
+import * as investmentRepo from '../repositories/investment-repository.js';
+import * as transactionRepo from '../repositories/transaction-repository.js';
+import type {
+  AccountSummary,
+  CreditCardSummary,
+  DashboardSummary,
+  DebtSummary,
+  InvestmentSummary,
+} from '../types/index.js';
 
 /**
  * Get complete dashboard summary for a user

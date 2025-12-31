@@ -1,25 +1,25 @@
-import { formatCurrency } from '../lib/formatters'
-import type { Account } from '../types'
+import { formatCurrency } from '../lib/formatters';
+import type { Account } from '../types';
 
 interface AccountsSummaryProps {
-  accounts: Account[]
+  accounts: Account[];
 }
 
 export default function AccountsSummary({ accounts }: AccountsSummaryProps): JSX.Element {
-  const total = accounts.reduce((sum, account) => sum + account.balance, 0)
+  const total = accounts.reduce((sum, account) => sum + account.balance, 0);
 
   const getAccountIcon = (type: Account['type']): string => {
     switch (type) {
       case 'checking':
-        return '💳'
+        return '💳';
       case 'savings':
-        return '🏦'
+        return '🏦';
       case 'investment':
-        return '📈'
+        return '📈';
       default:
-        return '💰'
+        return '💰';
     }
-  }
+  };
 
   return (
     <div className="card">
@@ -48,5 +48,5 @@ export default function AccountsSummary({ accounts }: AccountsSummaryProps): JSX
         </div>
       </div>
     </div>
-  )
+  );
 }

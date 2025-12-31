@@ -1,10 +1,10 @@
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatDate } from '../lib/formatters'
-import type { Notification } from '../types'
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatDate } from '../lib/formatters';
+import type { Notification } from '../types';
 
 interface NotificationsAlertsProps {
-  notifications: Notification[]
+  notifications: Notification[];
 }
 
 export default function NotificationsAlerts({
@@ -13,44 +13,44 @@ export default function NotificationsAlerts({
   const getNotificationIcon = (type: Notification['type']): string => {
     switch (type) {
       case 'bill':
-        return '📄'
+        return '📄';
       case 'payment':
-        return '✅'
+        return '✅';
       case 'alert':
-        return '⚠️'
+        return '⚠️';
       default:
-        return '📢'
+        return '📢';
     }
-  }
+  };
 
   const getPriorityVariant = (priority: Notification['priority']) => {
     switch (priority) {
       case 'high':
-        return 'error' as const
+        return 'error' as const;
       case 'medium':
-        return 'warning' as const
+        return 'warning' as const;
       case 'low':
-        return 'secondary' as const
+        return 'secondary' as const;
       default:
-        return 'outline' as const
+        return 'outline' as const;
     }
-  }
+  };
 
   const getBorderClass = (priority: Notification['priority']): string => {
     switch (priority) {
       case 'high':
-        return 'border-l-error-500 bg-error-50/50'
+        return 'border-l-error-500 bg-error-50/50';
       case 'medium':
-        return 'border-l-warning-500 bg-warning-50/50'
+        return 'border-l-warning-500 bg-warning-50/50';
       case 'low':
-        return 'border-l-primary bg-primary/5'
+        return 'border-l-primary bg-primary/5';
       default:
-        return 'border-l-border bg-muted/50'
+        return 'border-l-border bg-muted/50';
     }
-  }
+  };
 
-  const unreadNotifications = notifications.filter((n) => !n.read)
-  const readNotifications = notifications.filter((n) => n.read)
+  const unreadNotifications = notifications.filter((n) => !n.read);
+  const readNotifications = notifications.filter((n) => n.read);
 
   return (
     <Card>
@@ -128,5 +128,5 @@ export default function NotificationsAlerts({
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

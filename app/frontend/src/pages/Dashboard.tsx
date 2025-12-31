@@ -1,15 +1,15 @@
-import AccountsSummary from '../components/AccountsSummary'
-import CashFlowInsights from '../components/CashFlowInsights'
-import CreditCardTracker from '../components/CreditCardTracker'
-import DashboardHeader from '../components/DashboardHeader'
-import DebtOverview from '../components/DebtOverview'
-import InvestmentsSummary from '../components/InvestmentsSummary'
-import NotificationsAlerts from '../components/NotificationsAlerts'
-import OverviewCards from '../components/OverviewCards'
-import { useDashboard } from '../hooks/useDashboard'
+import AccountsSummary from '../components/AccountsSummary';
+import CashFlowInsights from '../components/CashFlowInsights';
+import CreditCardTracker from '../components/CreditCardTracker';
+import DashboardHeader from '../components/DashboardHeader';
+import DebtOverview from '../components/DebtOverview';
+import InvestmentsSummary from '../components/InvestmentsSummary';
+import NotificationsAlerts from '../components/NotificationsAlerts';
+import OverviewCards from '../components/OverviewCards';
+import { useDashboard } from '../hooks/useDashboard';
 
 export default function Dashboard(): JSX.Element {
-  const { data, isLoading, error } = useDashboard()
+  const { data, isLoading, error } = useDashboard();
 
   if (isLoading) {
     return (
@@ -19,7 +19,7 @@ export default function Dashboard(): JSX.Element {
           <p className="text-neutral-600">Loading dashboard...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -30,11 +30,11 @@ export default function Dashboard(): JSX.Element {
           <p className="text-neutral-600">{(error as Error).message}</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (!data) {
-    return <div />
+    return <div />;
   }
 
   return (
@@ -70,5 +70,5 @@ export default function Dashboard(): JSX.Element {
         </section>
       </main>
     </div>
-  )
+  );
 }

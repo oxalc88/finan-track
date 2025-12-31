@@ -2,8 +2,8 @@
  * Category repository - Data access layer for transaction categories
  */
 
+import type { Category, CategoryType, CreateCategoryInput } from '../types/index.js';
 import { query, queryOne } from './db.js';
-import type { Category, CreateCategoryInput, CategoryType } from '../types/index.js';
 
 /**
  * Create a new category
@@ -100,10 +100,7 @@ export async function getSystemCategories(type?: CategoryType): Promise<Category
 /**
  * Get user categories
  */
-export async function getUserCategories(
-  userId: string,
-  type?: CategoryType
-): Promise<Category[]> {
+export async function getUserCategories(userId: string, type?: CategoryType): Promise<Category[]> {
   const sql = type
     ? 'SELECT * FROM categories WHERE user_id = $1 AND type = $2 ORDER BY name ASC'
     : 'SELECT * FROM categories WHERE user_id = $1 ORDER BY type, name ASC';
@@ -185,10 +182,7 @@ export async function getSubcategories(parentId: string): Promise<Category[]> {
 /**
  * Check if category exists by name
  */
-export async function categoryExistsByName(
-  name: string,
-  userId?: string | null
-): Promise<boolean> {
+export async function categoryExistsByName(name: string, userId?: string | null): Promise<boolean> {
   const sql = userId
     ? 'SELECT COUNT(*) as count FROM categories WHERE name = $1 AND (user_id = $2 OR user_id IS NULL)'
     : 'SELECT COUNT(*) as count FROM categories WHERE name = $1 AND user_id IS NULL';

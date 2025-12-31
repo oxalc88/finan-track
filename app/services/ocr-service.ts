@@ -2,8 +2,8 @@
  * OCR Service - Business logic for invoice OCR processing
  */
 
-import * as storage from '../lib/storage.js';
 import * as ocr from '../lib/ocr.js';
+import * as storage from '../lib/storage.js';
 import * as invoiceRepo from '../repositories/invoice-repository.js';
 import type { Invoice, InvoiceItem } from '../types/index.js';
 
@@ -56,10 +56,7 @@ export async function uploadAndProcessInvoice(params: {
  * Process OCR for an invoice
  * This is called asynchronously after the invoice is uploaded
  */
-export async function processInvoiceOcr(
-  invoiceId: string,
-  fileBuffer: Buffer
-): Promise<void> {
+export async function processInvoiceOcr(invoiceId: string, fileBuffer: Buffer): Promise<void> {
   try {
     // Mark as processing
     await invoiceRepo.markInvoiceAsProcessing(invoiceId);
@@ -80,12 +77,8 @@ export async function processInvoiceOcr(
     await invoiceRepo.markInvoiceAsCompleted(invoiceId, {
       vendor_name: ocrResult.invoice_data?.vendor || null,
       invoice_number: ocrResult.invoice_data?.invoice_number || null,
-      invoice_date: ocrResult.invoice_data?.date
-        ? new Date(ocrResult.invoice_data.date)
-        : null,
-      due_date: ocrResult.invoice_data?.due_date
-        ? new Date(ocrResult.invoice_data.due_date)
-        : null,
+      invoice_date: ocrResult.invoice_data?.date ? new Date(ocrResult.invoice_data.date) : null,
+      due_date: ocrResult.invoice_data?.due_date ? new Date(ocrResult.invoice_data.due_date) : null,
       subtotal: ocrResult.invoice_data?.subtotal || null,
       tax: ocrResult.invoice_data?.tax || null,
       total: ocrResult.invoice_data?.total || null,

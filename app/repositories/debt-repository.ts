@@ -2,8 +2,8 @@
  * Debt repository - Data access layer for debts
  */
 
+import type { CreateDebtInput, Debt, DebtTermType } from '../types/index.js';
 import { query, queryOne } from './db.js';
-import type { Debt, CreateDebtInput, DebtTermType } from '../types/index.js';
 
 /**
  * Create a new debt
@@ -117,10 +117,7 @@ export async function updateDebt(
 /**
  * Update debt balance
  */
-export async function updateDebtBalance(
-  id: string,
-  newBalance: number
-): Promise<Debt | null> {
+export async function updateDebtBalance(id: string, newBalance: number): Promise<Debt | null> {
   const sql = `
     UPDATE debts
     SET current_balance = $1
@@ -134,10 +131,7 @@ export async function updateDebtBalance(
 /**
  * Make payment on debt
  */
-export async function makeDebtPayment(
-  id: string,
-  paymentAmount: number
-): Promise<Debt | null> {
+export async function makeDebtPayment(id: string, paymentAmount: number): Promise<Debt | null> {
   const sql = `
     UPDATE debts
     SET current_balance = GREATEST(0, current_balance - $1)

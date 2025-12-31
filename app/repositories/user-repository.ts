@@ -2,8 +2,8 @@
  * User repository - Data access layer for users
  */
 
+import type { CreateUserInput, User } from '../types/index.js';
 import { query, queryOne } from './db.js';
-import type { User, CreateUserInput } from '../types/index.js';
 
 /**
  * Create a new user
@@ -15,11 +15,7 @@ export async function createUser(data: CreateUserInput): Promise<User> {
     RETURNING *
   `;
 
-  const result = await queryOne<User>(sql, [
-    data.email,
-    data.name,
-    data.phone || null,
-  ]);
+  const result = await queryOne<User>(sql, [data.email, data.name, data.phone || null]);
 
   if (!result) {
     throw new Error('Failed to create user');

@@ -1,39 +1,39 @@
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatCurrency, formatPercentage } from '../lib/formatters'
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatCurrency, formatPercentage } from '../lib/formatters';
 
 interface OverviewCardsProps {
   overview: {
-    cashBalance: number
-    totalInvestments: number
-    totalDebt: number
-    netWorth: number
+    cashBalance: number;
+    totalInvestments: number;
+    totalDebt: number;
+    netWorth: number;
     changes: {
-      cashBalance: number
-      totalInvestments: number
-      totalDebt: number
-      netWorth: number
-    }
-  }
+      cashBalance: number;
+      totalInvestments: number;
+      totalDebt: number;
+      netWorth: number;
+    };
+  };
 }
 
 interface StatCardProps {
-  label: string
-  value: number
-  change: number
-  variant?: 'default' | 'success' | 'warning' | 'danger'
+  label: string;
+  value: number;
+  change: number;
+  variant?: 'default' | 'success' | 'warning' | 'danger';
 }
 
 function StatCard({ label, value, change, variant = 'default' }: StatCardProps): JSX.Element {
-  const isPositive = change > 0
-  const isInverted = variant === 'danger' // For debt, decrease is good
+  const isPositive = change > 0;
+  const isInverted = variant === 'danger'; // For debt, decrease is good
 
   const getBadgeVariant = () => {
     if (isInverted) {
-      return isPositive ? 'error' : 'success'
+      return isPositive ? 'error' : 'success';
     }
-    return isPositive ? 'success' : 'error'
-  }
+    return isPositive ? 'success' : 'error';
+  };
 
   return (
     <Card className="hover:shadow-lg transition-shadow">
@@ -47,7 +47,7 @@ function StatCard({ label, value, change, variant = 'default' }: StatCardProps):
         </Badge>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 export default function OverviewCards({ overview }: OverviewCardsProps): JSX.Element {
@@ -76,5 +76,5 @@ export default function OverviewCards({ overview }: OverviewCardsProps): JSX.Ele
         variant="success"
       />
     </div>
-  )
+  );
 }

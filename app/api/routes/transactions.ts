@@ -2,7 +2,7 @@
  * Transaction API routes
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as transactionRepo from '../../repositories/transaction-repository.js';
 import type { ApiResponse, CreateTransactionRequest } from '../../types/index.js';
 
@@ -112,16 +112,8 @@ export async function transactionRoutes(app: FastifyInstance): Promise<void> {
       reply: FastifyReply
     ) => {
       try {
-        const {
-          user_id,
-          account_id,
-          category_id,
-          type,
-          start_date,
-          end_date,
-          page,
-          limit,
-        } = request.query;
+        const { user_id, account_id, category_id, type, start_date, end_date, page, limit } =
+          request.query;
 
         if (!user_id) {
           return reply.status(400).send({

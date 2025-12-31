@@ -2,7 +2,7 @@
  * Alert API routes
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as alertRepo from '../../repositories/alert-repository.js';
 import * as schemas from '../../schemas/validation.js';
 import type { ApiResponse } from '../../types/index.js';
@@ -117,10 +117,7 @@ export async function alertRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get(
     '/unread',
-    async (
-      request: FastifyRequest<{ Querystring: { user_id: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
       try {
         const { user_id } = request.query;
 
@@ -185,10 +182,7 @@ export async function alertRoutes(app: FastifyInstance): Promise<void> {
    */
   app.post(
     '/read-all',
-    async (
-      request: FastifyRequest<{ Body: { user_id: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Body: { user_id: string } }>, reply: FastifyReply) => {
       try {
         const { user_id } = request.body;
 

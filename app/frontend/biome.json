@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": [
+    "include": [
       "**",
       "!!**/dist",
       "!!**/node_modules",
@@ -28,7 +28,7 @@
       "recommended": true,
       "complexity": {
         "noExtraBooleanCast": "error",
-        "noAdjacentSpacesInRegex": "error",
+        "noMultipleSpacesInRegularExpressionLiterals": "error",
         "noUselessCatch": "warn",
         "noUselessConstructor": "warn",
         "noUselessRename": "warn",
@@ -74,7 +74,7 @@
   },
   "overrides": [
     {
-      "includes": ["**/*.css"],
+      "include": ["**/*.css"],
       "linter": {
         "rules": {
           "correctness": {
@@ -84,12 +84,7 @@
       }
     }
   ],
-  "assist": {
-    "enabled": true,
-    "actions": {
-      "source": {
-        "organizeImports": "on"
-      }
-    }
+  "assists": {
+    "enabled": true
   }
 }

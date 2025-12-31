@@ -2,8 +2,8 @@
  * Investment repository - Data access layer for investments
  */
 
+import type { CreateInvestmentInput, Investment, InvestmentType } from '../types/index.js';
 import { query, queryOne } from './db.js';
-import type { Investment, CreateInvestmentInput, InvestmentType } from '../types/index.js';
 
 /**
  * Create a new investment

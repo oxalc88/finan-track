@@ -1,8 +1,8 @@
-import { format } from 'date-fns'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
 
 export default function DashboardHeader(): JSX.Element {
-  const today = new Date()
+  const today = new Date();
 
   return (
     <header className="bg-card border-b border-border shadow-sm">
@@ -23,5 +23,5 @@ export default function DashboardHeader(): JSX.Element {
         </div>
       </div>
     </header>
-  )
+  );
 }

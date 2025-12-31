@@ -2,8 +2,8 @@
  * Alert repository - Data access layer for notifications and alerts
  */
 
+import type { Alert, AlertPriority, AlertType, CreateAlertInput } from '../types/index.js';
 import { query, queryOne } from './db.js';
-import type { Alert, CreateAlertInput, AlertType, AlertPriority } from '../types/index.js';
 
 /**
  * Create a new alert

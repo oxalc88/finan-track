@@ -18,7 +18,12 @@ export type OcrStatus = 'pending' | 'processing' | 'completed' | 'failed';
 
 export type TransactionType = 'income' | 'expense' | 'transfer';
 
-export type AlertType = 'bill_reminder' | 'payment_confirmation' | 'credit_warning' | 'low_balance' | 'other';
+export type AlertType =
+  | 'bill_reminder'
+  | 'payment_confirmation'
+  | 'credit_warning'
+  | 'low_balance'
+  | 'other';
 
 export type AlertPriority = 'low' | 'medium' | 'high';
 

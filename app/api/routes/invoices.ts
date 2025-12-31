@@ -2,7 +2,7 @@
  * Invoice API routes
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as ocrService from '../../services/ocr-service.js';
 import type { ApiResponse, InvoiceWithItems } from '../../types/index.js';
 
@@ -115,8 +115,7 @@ export async function invoiceRoutes(app: FastifyInstance): Promise<void> {
       reply: FastifyReply
     ) => {
       try {
-        const { user_id, status, start_date, end_date, vendor_name, page, limit } =
-          request.query;
+        const { user_id, status, start_date, end_date, vendor_name, page, limit } = request.query;
 
         if (!user_id) {
           return reply.status(400).send({

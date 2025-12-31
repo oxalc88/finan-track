@@ -2,7 +2,7 @@
  * WhatsApp webhook routes for Kapso integration
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as whatsapp from '../../lib/whatsapp.js';
 import * as whatsappService from '../../services/whatsapp-service.js';
 import type { ApiResponse } from '../../types/index.js';
@@ -84,7 +84,11 @@ export async function whatsappRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get('/webhook', async (request: FastifyRequest, reply: FastifyReply) => {
     // Kapso may send a verification challenge
-    const params = request.query as { 'hub.mode'?: string; 'hub.challenge'?: string; 'hub.verify_token'?: string };
+    const params = request.query as {
+      'hub.mode'?: string;
+      'hub.challenge'?: string;
+      'hub.verify_token'?: string;
+    };
 
     if (params['hub.mode'] === 'subscribe') {
       // Return the challenge to verify the webhook
@@ -143,7 +147,7 @@ export async function whatsappRoutes(app: FastifyInstance): Promise<void> {
    * GET /api/whatsapp/health
    */
   app.get('/health', async (request: FastifyRequest, reply: FastifyReply) => {
-    const config = await import('../../config/env.js').then(m => m.getConfig());
+    const config = await import('../../config/env.js').then((m) => m.getConfig());
 
     const status = {
       configured: !!config.whatsapp.apiKey,

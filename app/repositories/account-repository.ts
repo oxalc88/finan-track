@@ -2,8 +2,8 @@
  * Account repository - Data access layer for bank accounts
  */
 
-import { query, queryOne } from './db.js';
 import type { Account, CreateAccountInput, UpdateAccountInput } from '../types/index.js';
+import { query, queryOne } from './db.js';
 
 /**
  * Create a new account
@@ -45,10 +45,7 @@ export async function getAccountById(id: string): Promise<Account | null> {
 /**
  * List accounts for a user
  */
-export async function listAccountsByUser(
-  userId: string,
-  activeOnly = true
-): Promise<Account[]> {
+export async function listAccountsByUser(userId: string, activeOnly = true): Promise<Account[]> {
   const sql = activeOnly
     ? 'SELECT * FROM accounts WHERE user_id = $1 AND is_active = true ORDER BY created_at DESC'
     : 'SELECT * FROM accounts WHERE user_id = $1 ORDER BY created_at DESC';
@@ -59,10 +56,7 @@ export async function listAccountsByUser(
 /**
  * Update account
  */
-export async function updateAccount(
-  id: string,
-  data: UpdateAccountInput
-): Promise<Account | null> {
+export async function updateAccount(id: string, data: UpdateAccountInput): Promise<Account | null> {
   const updates: string[] = [];
   const values: unknown[] = [];
   let paramIndex = 1;

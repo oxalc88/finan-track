@@ -2,8 +2,8 @@
  * Credit card service - Business logic for credit card management
  */
 
-import * as creditCardRepo from '../repositories/credit-card-repository.js';
 import * as alertRepo from '../repositories/alert-repository.js';
+import * as creditCardRepo from '../repositories/credit-card-repository.js';
 import type { CreateCreditCardInput, UpdateCreditCardInput } from '../types/index.js';
 
 /**

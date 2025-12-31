@@ -2,19 +2,13 @@
  * Transaction repository - Data access layer for transactions
  */
 
-import { query, queryOne, buildPaginationClause } from './db.js';
-import type {
-  Transaction,
-  CreateTransactionInput,
-  TransactionType,
-} from '../types/index.js';
+import type { CreateTransactionInput, Transaction, TransactionType } from '../types/index.js';
+import { buildPaginationClause, query, queryOne } from './db.js';
 
 /**
  * Create a new transaction
  */
-export async function createTransaction(
-  data: CreateTransactionInput
-): Promise<Transaction> {
+export async function createTransaction(data: CreateTransactionInput): Promise<Transaction> {
   const sql = `
     INSERT INTO transactions (
       user_id, account_id, category_id, invoice_id, type,
@@ -172,7 +166,7 @@ export async function getCashFlowSummary(params: {
     net: string;
   }>(sql, [groupByFormat, params.user_id, params.start_date, params.end_date]);
 
-  return results.map(r => ({
+  return results.map((r) => ({
     period: r.period,
     income: Number.parseFloat(r.income),
     expenses: Number.parseFloat(r.expenses),
@@ -188,12 +182,14 @@ export async function getCategoryBreakdown(params: {
   start_date: Date;
   end_date: Date;
   type?: TransactionType;
-}): Promise<Array<{
-  category_id: string;
-  category_name: string;
-  amount: number;
-  transaction_count: number;
-}>> {
+}): Promise<
+  Array<{
+    category_id: string;
+    category_name: string;
+    amount: number;
+    transaction_count: number;
+  }>
+> {
   const conditions = ['t.user_id = $1', 't.transaction_date >= $2', 't.transaction_date <= $3'];
   const values: unknown[] = [params.user_id, params.start_date, params.end_date];
 
@@ -222,7 +218,7 @@ export async function getCategoryBreakdown(params: {
     transaction_count: string;
   }>(sql, values);
 
-  return results.map(r => ({
+  return results.map((r) => ({
     category_id: r.category_id,
     category_name: r.category_name,
     amount: Number.parseFloat(r.amount),

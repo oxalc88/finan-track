@@ -2,7 +2,7 @@
  * API request and response types
  */
 
-import type { Invoice, InvoiceItem, Transaction, Alert } from './database.js';
+import type { Alert, Invoice, InvoiceItem, Transaction } from './database.js';
 
 // Standard API response wrapper
 export interface ApiResponse<T = unknown> {

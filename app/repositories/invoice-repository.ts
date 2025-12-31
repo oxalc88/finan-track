@@ -2,15 +2,15 @@
  * Invoice repository - Data access layer for invoices
  */
 
-import { query, queryOne, transaction, buildPaginationClause } from './db.js';
 import type {
-  Invoice,
-  InvoiceItem,
   CreateInvoiceInput,
   CreateInvoiceItemInput,
-  UpdateInvoiceInput,
+  Invoice,
+  InvoiceItem,
   OcrStatus,
+  UpdateInvoiceInput,
 } from '../types/index.js';
+import { buildPaginationClause, query, queryOne, transaction } from './db.js';
 
 /**
  * Create a new invoice record
@@ -132,10 +132,7 @@ export async function listInvoices(params: {
 /**
  * Update invoice
  */
-export async function updateInvoice(
-  id: string,
-  data: UpdateInvoiceInput
-): Promise<Invoice | null> {
+export async function updateInvoice(id: string, data: UpdateInvoiceInput): Promise<Invoice | null> {
   const updates: string[] = [];
   const values: unknown[] = [];
   let paramIndex = 1;
@@ -176,9 +173,7 @@ export async function deleteInvoice(id: string): Promise<void> {
 /**
  * Create invoice items in a transaction
  */
-export async function createInvoiceItems(
-  items: CreateInvoiceItemInput[]
-): Promise<InvoiceItem[]> {
+export async function createInvoiceItems(items: CreateInvoiceItemInput[]): Promise<InvoiceItem[]> {
   if (items.length === 0) {
     return [];
   }

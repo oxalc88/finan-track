@@ -1,11 +1,11 @@
-import type { DashboardData } from '../types'
+import type { DashboardData } from '../types';
 
 // const API_BASE_URL = '/api'  // TODO: Use this when connecting to real backend
 
 export async function fetchDashboardData(): Promise<DashboardData> {
   // For now, return mock data
   // In production, this would fetch from the backend API
-  return getMockDashboardData()
+  return getMockDashboardData();
 }
 
 function getMockDashboardData(): DashboardData {
@@ -175,5 +175,5 @@ function getMockDashboardData(): DashboardData {
         read: false,
       },
     ],
-  }
+  };
 }

@@ -2,9 +2,9 @@
  * Investment API routes
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import * as investmentService from '../../services/investment-service.js';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as schemas from '../../schemas/validation.js';
+import * as investmentService from '../../services/investment-service.js';
 import type { ApiResponse } from '../../types/index.js';
 
 export async function investmentRoutes(app: FastifyInstance): Promise<void> {
@@ -169,10 +169,7 @@ export async function investmentRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get(
     '/performance',
-    async (
-      request: FastifyRequest<{ Querystring: { user_id: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
       try {
         const { user_id } = request.query;
 

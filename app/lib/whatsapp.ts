@@ -87,7 +87,7 @@ export async function sendMessage(message: WhatsAppMessage): Promise<{ message_i
   const response = await fetch(`${config.whatsapp.apiUrl}/v1/messages`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${config.whatsapp.apiKey}`,
+      Authorization: `Bearer ${config.whatsapp.apiKey}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(message),
@@ -163,7 +163,7 @@ export async function downloadMedia(mediaId: string): Promise<Buffer> {
 
   const response = await fetch(`${config.whatsapp.apiUrl}/v1/media/${mediaId}`, {
     headers: {
-      'Authorization': `Bearer ${config.whatsapp.apiKey}`,
+      Authorization: `Bearer ${config.whatsapp.apiKey}`,
     },
   });
 
@@ -198,10 +198,7 @@ export function verifyWebhookSignature(
     .update(signedPayload)
     .digest('hex');
 
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature)
-  );
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature));
 }
 
 /**
@@ -275,10 +272,7 @@ export function formatPhoneNumber(phone: string): string {
 /**
  * Send invoice processing confirmation
  */
-export async function sendInvoiceProcessingMessage(
-  to: string,
-  invoiceId: string
-): Promise<void> {
+export async function sendInvoiceProcessingMessage(to: string, invoiceId: string): Promise<void> {
   await sendTextMessage(
     to,
     `✅ Invoice received! We're processing it now. You'll receive the details shortly.\n\nInvoice ID: ${invoiceId}`
@@ -313,10 +307,7 @@ Your invoice has been added to your financial dashboard.
 /**
  * Send invoice processing error message
  */
-export async function sendInvoiceErrorMessage(
-  to: string,
-  error: string
-): Promise<void> {
+export async function sendInvoiceErrorMessage(to: string, error: string): Promise<void> {
   await sendTextMessage(
     to,
     `❌ Sorry, we couldn't process your invoice.\n\nReason: ${error}\n\nPlease try sending a clearer image or contact support.`

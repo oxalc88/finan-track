@@ -2,7 +2,7 @@
  * Category API routes
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as categoryRepo from '../../repositories/category-repository.js';
 import * as schemas from '../../schemas/validation.js';
 import type { ApiResponse } from '../../types/index.js';
@@ -103,10 +103,7 @@ export async function categoryRoutes(app: FastifyInstance): Promise<void> {
    */
   app.get(
     '/system',
-    async (
-      request: FastifyRequest<{ Querystring: { type?: string } }>,
-      reply: FastifyReply
-    ) => {
+    async (request: FastifyRequest<{ Querystring: { type?: string } }>, reply: FastifyReply) => {
       try {
         const { type } = request.query;
         const categories = await categoryRepo.getSystemCategories(type as any);

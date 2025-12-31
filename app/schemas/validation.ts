@@ -117,7 +117,11 @@ export const makePaymentSchema = z.object({
 export const createCreditCardSchema = z.object({
   user_id: uuidSchema,
   name: z.string().min(1).max(255),
-  last_four: z.string().length(4).regex(/^\d{4}$/).optional(),
+  last_four: z
+    .string()
+    .length(4)
+    .regex(/^\d{4}$/)
+    .optional(),
   issuer: z.string().max(255).optional(),
   current_balance: nonNegativeNumberSchema.optional(),
   credit_limit: positiveNumberSchema,
@@ -129,7 +133,11 @@ export const createCreditCardSchema = z.object({
 
 export const updateCreditCardSchema = z.object({
   name: z.string().min(1).max(255).optional(),
-  last_four: z.string().length(4).regex(/^\d{4}$/).optional(),
+  last_four: z
+    .string()
+    .length(4)
+    .regex(/^\d{4}$/)
+    .optional(),
   issuer: z.string().max(255).optional(),
   current_balance: nonNegativeNumberSchema.optional(),
   credit_limit: positiveNumberSchema.optional(),
@@ -145,7 +153,10 @@ export const createCategorySchema = z.object({
   user_id: uuidSchema.optional(),
   name: z.string().min(1).max(100),
   type: z.enum(['income', 'expense']),
-  color: z.string().regex(/^#[0-9A-F]{6}$/i).optional(),
+  color: z
+    .string()
+    .regex(/^#[0-9A-F]{6}$/i)
+    .optional(),
   icon: z.string().max(50).optional(),
   parent_id: uuidSchema.optional(),
 });
@@ -153,7 +164,10 @@ export const createCategorySchema = z.object({
 export const updateCategorySchema = z.object({
   name: z.string().min(1).max(100).optional(),
   type: z.enum(['income', 'expense']).optional(),
-  color: z.string().regex(/^#[0-9A-F]{6}$/i).optional(),
+  color: z
+    .string()
+    .regex(/^#[0-9A-F]{6}$/i)
+    .optional(),
   icon: z.string().max(50).optional(),
   parent_id: uuidSchema.optional(),
 });

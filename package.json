@@ -15,8 +15,8 @@
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "format": "ultracite format .",
-    "lint": "ultracite check .",
+    "format": "biome format --write .",
+    "lint": "biome check .",
     "check": "npm run typecheck && npm run lint && npm run test",
     "migrate": "node -r dotenv/config migrations/run.js",
     "seed": "tsx app/utils/seed.ts",
@@ -47,12 +47,12 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.10.1",
     "@types/pg": "^8.11.10",
     "@vitest/coverage-v8": "^2.1.8",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
-    "ultracite": "^0.4.0",
     "vitest": "^2.1.8"
   },
   "engines": {

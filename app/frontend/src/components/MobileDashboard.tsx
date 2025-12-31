@@ -1,23 +1,23 @@
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { formatCurrency, getDaysUntil } from '../lib/formatters'
-import type { Account, CreditCard, Notification } from '../types'
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { formatCurrency, getDaysUntil } from '../lib/formatters';
+import type { Account, CreditCard, Notification } from '../types';
 
 interface MobileDashboardProps {
-  accounts: Account[]
-  creditCards: CreditCard[]
-  notifications: Notification[]
-  onNavigate: (section: string) => void
+  accounts: Account[];
+  creditCards: CreditCard[];
+  notifications: Notification[];
+  onNavigate: (section: string) => void;
 }
 
 interface PriorityCard {
-  id: string
-  title: string
-  subtitle: string
-  value?: string
-  status: 'urgent' | 'warning' | 'normal'
-  icon: string
-  section: string
+  id: string;
+  title: string;
+  subtitle: string;
+  value?: string;
+  status: 'urgent' | 'warning' | 'normal';
+  icon: string;
+  section: string;
 }
 
 export default function MobileDashboard({
@@ -27,7 +27,7 @@ export default function MobileDashboard({
   onNavigate,
 }: MobileDashboardProps): JSX.Element {
   // Calculate total cash
-  const totalCash = accounts.reduce((sum, acc) => sum + acc.balance, 0)
+  const totalCash = accounts.reduce((sum, acc) => sum + acc.balance, 0);
 
   // Find urgent payments (within 3 days)
   const urgentPayments = creditCards
@@ -40,7 +40,7 @@ export default function MobileDashboard({
       status: getDaysUntil(card.dueDate) === 0 ? ('urgent' as const) : ('warning' as const),
       icon: '💳',
       section: 'credit-cards',
-    }))
+    }));
 
   // Find high utilization cards
   const highUtilizationCards = creditCards
@@ -53,7 +53,7 @@ export default function MobileDashboard({
       status: 'warning' as const,
       icon: '⚠️',
       section: 'credit-cards',
-    }))
+    }));
 
   // Priority cards to show
   const priorityCards: PriorityCard[] = [
@@ -68,29 +68,29 @@ export default function MobileDashboard({
     },
     ...urgentPayments,
     ...highUtilizationCards,
-  ]
+  ];
 
   const getStatusVariant = (status: PriorityCard['status']) => {
     switch (status) {
       case 'urgent':
-        return 'error' as const
+        return 'error' as const;
       case 'warning':
-        return 'warning' as const
+        return 'warning' as const;
       default:
-        return 'secondary' as const
+        return 'secondary' as const;
     }
-  }
+  };
 
   const getCardClassName = (status: PriorityCard['status']) => {
     switch (status) {
       case 'urgent':
-        return 'border-error-300 bg-error-50/50'
+        return 'border-error-300 bg-error-50/50';
       case 'warning':
-        return 'border-warning-300 bg-warning-50/50'
+        return 'border-warning-300 bg-warning-50/50';
       default:
-        return ''
+        return '';
     }
-  }
+  };
 
   return (
     <div className="pb-20">
@@ -185,5 +185,5 @@ export default function MobileDashboard({
         </div>
       </section>
     </div>
-  )
+  );
 }
