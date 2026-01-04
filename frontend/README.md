@@ -127,7 +127,7 @@ src/
 
 ## Theme Configuration
 
-The dashboard uses a customizable theme defined in `../../theme.config.json`. Colors can be modified there and will automatically apply to the entire dashboard.
+The dashboard uses a customizable theme defined in `theme.config.json`. Colors can be modified there and will automatically apply to the entire dashboard.
 
 ## API Integration
 

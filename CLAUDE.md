@@ -328,7 +328,7 @@ npm run lint
 
 ## Theme Customization
 
-The frontend uses a **configurable theme system** powered by Tailwind CSS. Colors can be customized by editing `theme.config.json`.
+The frontend uses a **configurable theme system** powered by Tailwind CSS. Colors can be customized by editing `frontend/theme.config.json`.
 
 ### Color Families
 - `primary` - Main brand color
@@ -338,9 +338,9 @@ The frontend uses a **configurable theme system** powered by Tailwind CSS. Color
 - `neutral` - Text and neutral elements
 
 ### Applying Changes
-After modifying `theme.config.json`, rebuild the frontend:
+After modifying `frontend/theme.config.json`, rebuild the frontend:
 ```bash
-cd app/frontend && npm run build
+cd frontend && npm run build
 ```
 
 ## Environment Variables

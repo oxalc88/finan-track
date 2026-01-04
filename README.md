@@ -71,9 +71,12 @@ finan-track/
 │   ├── aws/                  # Lambda or ECS configs
 │   └── cloudflare/           # Workers configs
 │
-├── migrations/                # Database migrations
 ├── docs/                      # Documentation
-└── theme.config.json          # Theme customization
+│   ├── architecture/         # Architecture docs
+│   ├── deployment/           # Deployment guides
+│   └── guides/               # Integration guides
+│
+└── scripts/                   # Utility scripts
 ```
 
 **Key principle:** Application and infrastructure are **completely independent**.
@@ -86,11 +89,11 @@ See [docs/APP_INFRA_SEPARATION.md](./docs/APP_INFRA_SEPARATION.md) for detailed 
 
 ## Theme Customization
 
-The application uses a configurable theme system powered by Tailwind CSS. All colors can be customized by editing `theme.config.json`.
+The application uses a configurable theme system powered by Tailwind CSS. All colors can be customized by editing `frontend/theme.config.json`.
 
 ### Changing Colors
 
-1. Open `theme.config.json`
+1. Open `frontend/theme.config.json`
 2. Modify the color scales for your desired palette:
 
 ```json
@@ -126,18 +129,20 @@ Each color family (primary, secondary, accent, etc.) follows Tailwind's scale co
 
 ### Applying Theme Changes
 
-The theme is loaded at build time and generates CSS custom properties. After modifying `theme.config.json`:
+The theme is loaded at build time and generates CSS custom properties. After modifying `frontend/theme.config.json`:
 
-1. Rebuild the frontend: `npm run build` (or equivalent)
+1. Rebuild the frontend: `cd frontend && npm run build`
 2. The new colors will be applied throughout the application
 
 ## Documentation
 
-- **[LAYERED_ARCHITECTURE.md](./LAYERED_ARCHITECTURE.md)** - Main architecture overview (start here)
-- **[docs/PHASE_1_LAYERED.md](./docs/PHASE_1_LAYERED.md)** - Detailed implementation guide
-- **[docs/ARCHITECTURE_COMPARISON.md](./docs/ARCHITECTURE_COMPARISON.md)** - Why we chose this architecture
-- **[docs/APP_INFRA_SEPARATION.md](./docs/APP_INFRA_SEPARATION.md)** - Application vs infrastructure separation
-- **[docs/ULTRACITE_SETUP.md](./docs/ULTRACITE_SETUP.md)** - Code quality and linting setup
+- **[docs/README.md](./docs/README.md)** - Documentation index (start here)
+- **[docs/architecture/LAYERED_ARCHITECTURE.md](./docs/architecture/LAYERED_ARCHITECTURE.md)** - Main architecture overview
+- **[docs/architecture/ARCHITECTURE_COMPARISON.md](./docs/architecture/ARCHITECTURE_COMPARISON.md)** - Why we chose this architecture
+- **[docs/architecture/APP_INFRA_SEPARATION.md](./docs/architecture/APP_INFRA_SEPARATION.md)** - Application vs infrastructure separation
+- **[docs/deployment/DEPLOYMENT.md](./docs/deployment/DEPLOYMENT.md)** - Deployment options overview
+- **[docs/deployment/HETZNER_DEPLOY.md](./docs/deployment/HETZNER_DEPLOY.md)** - Hetzner VPS deployment guide
+- **[CLAUDE.md](./CLAUDE.md)** - Development guidelines and code patterns
 
 ## Development Workflow
 

@@ -1,4 +1,4 @@
-import themeConfig from '../../theme.config.json';
+import themeConfig from './theme.config.json';
 
 /** @type {import('tailwindcss').Config} */
 export default {
