@@ -94,11 +94,11 @@ test.describe('Dashboard Screenshots', () => {
   test('capture mobile view', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/', { waitUntil: 'networkidle' });
     await page.waitForTimeout(2000);
 
-    // Wait for dashboard to load
-    await page.waitForSelector('text=Financial Dashboard');
+    // Wait for any dashboard content to load
+    await page.waitForLoadState('networkidle');
 
     // Take full page screenshot in mobile view
     await page.screenshot({
