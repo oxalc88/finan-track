@@ -11,7 +11,7 @@
     "dev": "npm run dev --workspace=backend",
     "dev:frontend": "npm run dev --workspace=frontend",
     "dev:backend": "npm run dev --workspace=backend",
-    "dev:all": "docker compose -f deployments/docker/docker-compose.yml up -d",
+    "dev:all": "docker compose up -d",
     "build": "npm run build --workspaces",
     "build:frontend": "npm run build --workspace=frontend",
     "build:backend": "npm run build --workspace=backend",
@@ -22,9 +22,12 @@
     "lint": "npm run lint --workspaces",
     "check": "npm run typecheck && npm run lint && npm run test",
     "migrate": "npm run migrate --workspace=backend",
-    "docker:up": "docker compose -f deployments/docker/docker-compose.yml up -d",
-    "docker:down": "docker compose -f deployments/docker/docker-compose.yml down",
-    "docker:build": "docker build -t finan-track ."
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "docker:prod:up": "docker compose -f docker-compose.prod.yml up -d",
+    "docker:prod:down": "docker compose -f docker-compose.prod.yml down",
+    "docker:prod:build": "docker compose -f docker-compose.prod.yml build"
   },
   "keywords": [
     "invoice",

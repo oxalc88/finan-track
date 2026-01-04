@@ -28,31 +28,43 @@ Routes (HTTP) → Services (Business Logic) → Repositories (Data) → Librarie
 ### Directory Structure
 
 ```
-backend/
-├── api/                    # HTTP routes and middleware (Fastify)
-├── services/               # Business logic (pure functions)
-├── repositories/           # Data access layer (PostgreSQL)
-├── migrations/             # Database migrations
-├── lib/                    # External service clients (cloud-agnostic)
-│   ├── storage.ts         # S3/R2/MinIO client
-│   ├── queue.ts           # SQS/RabbitMQ client
-│   ├── whatsapp.ts        # Kapso.ai client
-│   └── ocr.ts             # OCR service client
-├── types/                  # TypeScript types
-├── utils/                  # Helper functions
-└── config/                 # Configuration management (Zod schemas)
-
-frontend/                   # Dashboard UI (React + Vite + Tailwind)
-├── src/                    # React components and pages
-├── tests/                  # Playwright tests
-└── screenshots/            # Dashboard screenshots
-
-docs/                       # Documentation
-├── architecture/           # System design docs
-├── deployment/             # Deployment guides
-└── guides/                 # Integration guides
-
-scripts/                    # Utility scripts
+finan-track/                # Monorepo root
+├── .env.example            # Development environment variables
+├── env.production.example  # Production environment template
+├── docker-compose.yml      # Development infrastructure (Postgres, MinIO, Redis, RabbitMQ)
+├── docker-compose.prod.yml # Production full stack deployment
+├── package.json            # Monorepo workspace configuration
+│
+├── backend/                # Backend service
+│   ├── api/               # HTTP routes and middleware (Fastify)
+│   ├── services/          # Business logic (pure functions)
+│   ├── repositories/      # Data access layer (PostgreSQL)
+│   ├── migrations/        # Database migrations
+│   ├── lib/               # External service clients (cloud-agnostic)
+│   │   ├── storage.ts    # S3/R2/MinIO client
+│   │   ├── queue.ts      # SQS/RabbitMQ client
+│   │   ├── whatsapp.ts   # Kapso.ai client
+│   │   └── ocr.ts        # OCR service client
+│   ├── types/             # TypeScript types
+│   ├── utils/             # Helper functions
+│   ├── config/            # Configuration management (Zod schemas)
+│   ├── Dockerfile         # Backend container build
+│   └── package.json       # Backend dependencies
+│
+├── frontend/               # Frontend service (Dashboard UI)
+│   ├── src/               # React components and pages
+│   ├── tests/             # Playwright tests
+│   ├── screenshots/       # Dashboard screenshots
+│   ├── theme.config.json  # Theme configuration
+│   ├── Dockerfile         # Frontend container build (nginx)
+│   └── package.json       # Frontend dependencies
+│
+├── docs/                   # Documentation
+│   ├── architecture/      # System design docs
+│   ├── deployment/        # Deployment guides
+│   └── guides/            # Integration guides
+│
+└── scripts/                # Utility scripts (deployment, setup)
 ```
 
 ### Technology Stack
@@ -139,15 +151,24 @@ npm run seed
 ### Docker
 
 ```bash
-# Start all local services
+# Development - Start infrastructure services (Postgres, MinIO, Redis, RabbitMQ)
 npm run docker:up
 
-# Stop all services
+# Development - Stop all services
 npm run docker:down
 
-# Build Docker image
-npm run docker:build
+# Development - View logs
+npm run docker:logs
+
+# Production - Build and start full stack (backend + frontend + infrastructure)
+npm run docker:prod:build
+npm run docker:prod:up
+
+# Production - Stop production stack
+npm run docker:prod:down
 ```
+
+**Note**: Development docker-compose only runs infrastructure. Run backend/frontend with `npm run dev` for hot-reloading.
 
 ## Code Patterns
 

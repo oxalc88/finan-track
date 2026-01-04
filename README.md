@@ -41,42 +41,45 @@ This application automates invoice ingestion from WhatsApp, extracts structured 
 
 ## Project Structure
 
-**Two independent folders:**
+**Monorepo organization with clear separation of concerns:**
 
 ```
 finan-track/
 │
-├── app/                       # 📦 APPLICATION CODE (build this first)
-│   ├── api/                  # HTTP routes and middleware
+├── .env.example               # Development environment variables
+├── env.production.example     # Production environment template
+├── docker-compose.yml         # Development infrastructure (Postgres, MinIO, etc.)
+├── docker-compose.prod.yml    # Production full stack deployment
+├── package.json               # Monorepo workspace configuration
+│
+├── backend/                   # 📦 BACKEND SERVICE
+│   ├── api/                  # HTTP routes and middleware (Fastify)
 │   ├── services/             # Business logic (pure functions)
-│   ├── repositories/         # Data access layer
+│   ├── repositories/         # Data access layer (PostgreSQL)
+│   ├── migrations/           # Database migrations
 │   ├── jobs/                 # Background workers
 │   ├── lib/                  # External service clients (cloud-agnostic)
 │   ├── types/                # TypeScript types
 │   ├── utils/                # Helper functions
-│   ├── config/               # Configuration management
-│   └── frontend/             # Dashboard UI
+│   ├── config/               # Configuration management (Zod schemas)
+│   ├── Dockerfile            # Backend container build
+│   └── package.json          # Backend dependencies
 │
-├── infra/                     # 🏗️ INFRASTRUCTURE (set up later with Terraform)
-│   └── terraform/
-│       ├── modules/          # Reusable Terraform modules
-│       ├── providers/        # AWS / Cloudflare / Hetzner
-│       │   ├── aws/         # For Lambda or ECS
-│       │   ├── cloudflare/  # For Workers
-│       │   └── hetzner/     # For Docker on VPS
-│       └── environments/     # dev / staging / production
+├── frontend/                  # 🎨 FRONTEND SERVICE
+│   ├── src/                  # React components and pages
+│   ├── tests/                # Playwright tests
+│   ├── screenshots/          # Dashboard screenshots
+│   ├── theme.config.json     # Theme configuration
+│   ├── Dockerfile            # Frontend container build (nginx)
+│   └── package.json          # Frontend dependencies
 │
-├── deployments/               # 🚀 DEPLOYMENT CONFIGS
-│   ├── docker/               # Docker & Docker Compose
-│   ├── aws/                  # Lambda or ECS configs
-│   └── cloudflare/           # Workers configs
-│
-├── docs/                      # Documentation
-│   ├── architecture/         # Architecture docs
+├── docs/                      # 📚 DOCUMENTATION
+│   ├── architecture/         # Architecture design docs
 │   ├── deployment/           # Deployment guides
 │   └── guides/               # Integration guides
 │
-└── scripts/                   # Utility scripts
+└── scripts/                   # 🔧 UTILITY SCRIPTS
+    └── setup-hetzner.sh      # Automated VPS deployment
 ```
 
 **Key principle:** Application and infrastructure are **completely independent**.
@@ -175,7 +178,7 @@ npm run migrate
 npm run dev
 
 # 6. Start frontend (in another terminal)
-cd app/frontend && npm run dev
+npm run dev:frontend
 ```
 
 ### Available Commands
