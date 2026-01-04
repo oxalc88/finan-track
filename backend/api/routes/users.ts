@@ -92,6 +92,16 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
     async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
       try {
         const { id } = request.params;
+
+        // Validate UUID format
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        if (!uuidRegex.test(id)) {
+          return reply.status(400).send({
+            success: false,
+            error: 'Invalid user ID format',
+          } satisfies ApiResponse);
+        }
+
         const user = await userRepo.getUserById(id);
 
         if (!user) {

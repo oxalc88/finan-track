@@ -117,10 +117,19 @@ export async function investmentRoutes(app: FastifyInstance): Promise<void> {
           } satisfies ApiResponse);
         }
 
+        // Validate investment type
+        const validTypes = ['stocks', 'bonds', 'real_estate', 'crypto', 'other'];
+        if (type && !validTypes.includes(type)) {
+          return reply.status(400).send({
+            success: false,
+            error: `Invalid type. Must be one of: ${validTypes.join(', ')}`,
+          } satisfies ApiResponse);
+        }
+
         const activeOnly = active_only !== 'false';
         const investments = await investmentService.listUserInvestments(
           user_id,
-          type as any,
+          type as 'stocks' | 'bonds' | 'real_estate' | 'crypto' | 'other' | undefined,
           activeOnly
         );
 

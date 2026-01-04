@@ -81,6 +81,7 @@ export async function listAlertsByUser(
   const limit = params?.limit ?? 50;
   const whereClause = `WHERE ${conditions.join(' AND ')}`;
 
+  // Use parameterized query for LIMIT to prevent SQL injection
   const sql = `
     SELECT * FROM alerts
     ${whereClause}
@@ -90,8 +91,10 @@ export async function listAlertsByUser(
            ELSE 3
       END,
       created_at DESC
-    LIMIT ${limit}
+    LIMIT $${paramIndex}
   `;
+
+  values.push(limit);
 
   return query<Alert>(sql, values);
 }

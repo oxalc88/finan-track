@@ -123,9 +123,27 @@ export async function alertRoutes(app: FastifyInstance): Promise<void> {
           } satisfies ApiResponse);
         }
 
+        // Validate alert type
+        const validTypes = ['bill_reminder', 'payment_confirmation', 'credit_warning', 'low_balance', 'other'];
+        if (type && !validTypes.includes(type)) {
+          return reply.status(400).send({
+            success: false,
+            error: `Invalid type. Must be one of: ${validTypes.join(', ')}`,
+          } satisfies ApiResponse);
+        }
+
+        // Validate priority
+        const validPriorities = ['low', 'medium', 'high'];
+        if (priority && !validPriorities.includes(priority)) {
+          return reply.status(400).send({
+            success: false,
+            error: `Invalid priority. Must be one of: ${validPriorities.join(', ')}`,
+          } satisfies ApiResponse);
+        }
+
         const alerts = await alertRepo.listAlertsByUser(user_id, {
-          type: type as any,
-          priority: priority as any,
+          type: type as 'bill_reminder' | 'payment_confirmation' | 'credit_warning' | 'low_balance' | 'other' | undefined,
+          priority: priority as 'low' | 'medium' | 'high' | undefined,
           isRead: is_read === 'true' ? true : is_read === 'false' ? false : undefined,
           limit: limit ? Number.parseInt(limit, 10) : undefined,
         });

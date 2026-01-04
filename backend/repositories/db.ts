@@ -105,6 +105,11 @@ export function buildWhereClause(
 
   for (const [key, value] of Object.entries(filters)) {
     if (value !== undefined && value !== null) {
+      // Validate column name to prevent SQL injection - only allow safe identifiers
+      if (!/^[a-z_][a-z0-9_]*$/i.test(key)) {
+        throw new Error(`Invalid filter column name: ${key}`);
+      }
+
       conditions.push(`${key} = $${index}`);
       values.push(value);
       index++;
