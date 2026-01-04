@@ -129,6 +129,12 @@ export function buildPaginationClause(params: {
   const offset = (page - 1) * limit;
 
   const sortBy = params.sort_by || 'created_at';
+
+  // Validate sort_by to prevent SQL injection - only allow safe identifiers
+  if (!/^[a-z_][a-z0-9_]*$/i.test(sortBy)) {
+    throw new Error(`Invalid sort_by parameter: ${sortBy}`);
+  }
+
   const sortOrder = params.sort_order === 'asc' ? 'ASC' : 'DESC';
 
   const clause = `ORDER BY ${sortBy} ${sortOrder} LIMIT ${limit} OFFSET ${offset}`;

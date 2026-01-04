@@ -3,7 +3,7 @@
  */
 
 import * as debtRepo from '../repositories/debt-repository.js';
-import type { CreateDebtInput, DebtTermType } from '../types/index.js';
+import type { CreateDebtInput, Debt, DebtTermType } from '../types/index.js';
 
 /**
  * Create a new debt
@@ -42,7 +42,7 @@ export async function listUserDebts(userId: string, type?: DebtTermType, activeO
  */
 export async function updateDebt(
   id: string,
-  data: Partial<Omit<any, 'id' | 'user_id' | 'created_at' | 'updated_at'>>
+  data: Partial<Omit<Debt, 'id' | 'user_id' | 'created_at' | 'updated_at'>>
 ) {
   const debt = await debtRepo.updateDebt(id, data);
 

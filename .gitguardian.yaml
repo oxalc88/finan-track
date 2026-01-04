@@ -1,0 +1,24 @@
+# GitGuardian configuration
+# https://docs.gitguardian.com/internal-repositories-monitoring/integrations/git_hooks/pre_commit
+
+version: 2
+
+# Paths to exclude from scanning
+paths-ignore:
+  - "**/*.md"
+  - "**/package-lock.json"
+  - "**/yarn.lock"
+  - ".env.example"
+  - "**/screenshots/**"
+  - "**/coverage/**"
+
+# Specific secrets to ignore
+# These are DEVELOPMENT-ONLY default credentials for local Docker containers
+# They are NOT used in production and are publicly known defaults
+matches-ignore:
+  - name: "Docker Compose Development Defaults - PostgreSQL"
+    match: "postgres"
+  - name: "Docker Compose Development Defaults - MinIO"
+    match: "minioadmin"
+  - name: "Docker Compose Development Defaults - RabbitMQ"
+    match: "guest"

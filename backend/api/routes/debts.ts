@@ -38,6 +38,39 @@ export async function debtRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
+   * Get debt summary for user
+   * GET /api/debts/summary?user_id={uuid}
+   */
+  app.get(
+    '/summary',
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
+      try {
+        const { user_id } = request.query;
+
+        if (!user_id) {
+          return reply.status(400).send({
+            success: false,
+            error: 'user_id is required',
+          } satisfies ApiResponse);
+        }
+
+        const summary = await debtService.getDebtSummary(user_id);
+
+        return reply.send({
+          success: true,
+          data: summary,
+        } satisfies ApiResponse);
+      } catch (error) {
+        request.log.error(error, 'Failed to get debt summary');
+        return reply.status(500).send({
+          success: false,
+          error: 'Failed to get debt summary',
+        } satisfies ApiResponse);
+      }
+    }
+  );
+
+  /**
    * Get debt by ID
    * GET /api/debts/:id
    */
@@ -186,6 +219,10 @@ export async function debtRoutes(app: FastifyInstance): Promise<void> {
     async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
       try {
         const { id } = request.params;
+
+        // Verify debt exists before deletion
+        await debtService.getDebtById(id);
+
         await debtService.deleteDebt(id);
 
         return reply.send({
@@ -193,43 +230,17 @@ export async function debtRoutes(app: FastifyInstance): Promise<void> {
           message: 'Debt deleted successfully',
         } satisfies ApiResponse);
       } catch (error) {
+        if (error instanceof Error && error.message === 'Debt not found') {
+          return reply.status(404).send({
+            success: false,
+            error: error.message,
+          } satisfies ApiResponse);
+        }
+
         request.log.error(error, 'Failed to delete debt');
         return reply.status(500).send({
           success: false,
           error: 'Failed to delete debt',
-        } satisfies ApiResponse);
-      }
-    }
-  );
-
-  /**
-   * Get debt summary for user
-   * GET /api/debts/summary?user_id={uuid}
-   */
-  app.get(
-    '/summary',
-    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
-      try {
-        const { user_id } = request.query;
-
-        if (!user_id) {
-          return reply.status(400).send({
-            success: false,
-            error: 'user_id is required',
-          } satisfies ApiResponse);
-        }
-
-        const summary = await debtService.getDebtSummary(user_id);
-
-        return reply.send({
-          success: true,
-          data: summary,
-        } satisfies ApiResponse);
-      } catch (error) {
-        request.log.error(error, 'Failed to get debt summary');
-        return reply.status(500).send({
-          success: false,
-          error: 'Failed to get debt summary',
         } satisfies ApiResponse);
       }
     }

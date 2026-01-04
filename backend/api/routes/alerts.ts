@@ -31,6 +31,39 @@ export async function alertRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
+   * Get unread alerts
+   * GET /api/alerts/unread?user_id={uuid}
+   */
+  app.get(
+    '/unread',
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
+      try {
+        const { user_id } = request.query;
+
+        if (!user_id) {
+          return reply.status(400).send({
+            success: false,
+            error: 'user_id is required',
+          } satisfies ApiResponse);
+        }
+
+        const alerts = await alertRepo.getUnreadAlerts(user_id);
+
+        return reply.send({
+          success: true,
+          data: alerts,
+        } satisfies ApiResponse);
+      } catch (error) {
+        request.log.error(error, 'Failed to get unread alerts');
+        return reply.status(500).send({
+          success: false,
+          error: 'Failed to get unread alerts',
+        } satisfies ApiResponse);
+      }
+    }
+  );
+
+  /**
    * Get alert by ID
    * GET /api/alerts/:id
    */
@@ -106,39 +139,6 @@ export async function alertRoutes(app: FastifyInstance): Promise<void> {
         return reply.status(500).send({
           success: false,
           error: 'Failed to list alerts',
-        } satisfies ApiResponse);
-      }
-    }
-  );
-
-  /**
-   * Get unread alerts
-   * GET /api/alerts/unread?user_id={uuid}
-   */
-  app.get(
-    '/unread',
-    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
-      try {
-        const { user_id } = request.query;
-
-        if (!user_id) {
-          return reply.status(400).send({
-            success: false,
-            error: 'user_id is required',
-          } satisfies ApiResponse);
-        }
-
-        const alerts = await alertRepo.getUnreadAlerts(user_id);
-
-        return reply.send({
-          success: true,
-          data: alerts,
-        } satisfies ApiResponse);
-      } catch (error) {
-        request.log.error(error, 'Failed to get unread alerts');
-        return reply.status(500).send({
-          success: false,
-          error: 'Failed to get unread alerts',
         } satisfies ApiResponse);
       }
     }

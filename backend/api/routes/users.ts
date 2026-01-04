@@ -41,38 +41,6 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * Get user by ID
-   * GET /api/users/:id
-   */
-  app.get(
-    '/:id',
-    async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
-      try {
-        const { id } = request.params;
-        const user = await userRepo.getUserById(id);
-
-        if (!user) {
-          return reply.status(404).send({
-            success: false,
-            error: 'User not found',
-          } satisfies ApiResponse);
-        }
-
-        return reply.send({
-          success: true,
-          data: user,
-        } satisfies ApiResponse);
-      } catch (error) {
-        request.log.error(error, 'Failed to get user');
-        return reply.status(500).send({
-          success: false,
-          error: 'Failed to get user',
-        } satisfies ApiResponse);
-      }
-    }
-  );
-
-  /**
    * Get user by email
    * GET /api/users/by-email?email={email}
    */
@@ -110,6 +78,38 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
         return reply.status(500).send({
           success: false,
           error: 'Failed to get user by email',
+        } satisfies ApiResponse);
+      }
+    }
+  );
+
+  /**
+   * Get user by ID
+   * GET /api/users/:id
+   */
+  app.get(
+    '/:id',
+    async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+      try {
+        const { id } = request.params;
+        const user = await userRepo.getUserById(id);
+
+        if (!user) {
+          return reply.status(404).send({
+            success: false,
+            error: 'User not found',
+          } satisfies ApiResponse);
+        }
+
+        return reply.send({
+          success: true,
+          data: user,
+        } satisfies ApiResponse);
+      } catch (error) {
+        request.log.error(error, 'Failed to get user');
+        return reply.status(500).send({
+          success: false,
+          error: 'Failed to get user',
         } satisfies ApiResponse);
       }
     }

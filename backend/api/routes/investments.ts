@@ -31,6 +31,39 @@ export async function investmentRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
+   * Get investment performance
+   * GET /api/investments/performance?user_id={uuid}
+   */
+  app.get(
+    '/performance',
+    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
+      try {
+        const { user_id } = request.query;
+
+        if (!user_id) {
+          return reply.status(400).send({
+            success: false,
+            error: 'user_id is required',
+          } satisfies ApiResponse);
+        }
+
+        const performance = await investmentService.getInvestmentPerformance(user_id);
+
+        return reply.send({
+          success: true,
+          data: performance,
+        } satisfies ApiResponse);
+      } catch (error) {
+        request.log.error(error, 'Failed to get investment performance');
+        return reply.status(500).send({
+          success: false,
+          error: 'Failed to get investment performance',
+        } satisfies ApiResponse);
+      }
+    }
+  );
+
+  /**
    * Get investment by ID
    * GET /api/investments/:id
    */
@@ -158,39 +191,6 @@ export async function investmentRoutes(app: FastifyInstance): Promise<void> {
         return reply.status(500).send({
           success: false,
           error: 'Failed to delete investment',
-        } satisfies ApiResponse);
-      }
-    }
-  );
-
-  /**
-   * Get investment performance for user
-   * GET /api/investments/performance?user_id={uuid}
-   */
-  app.get(
-    '/performance',
-    async (request: FastifyRequest<{ Querystring: { user_id: string } }>, reply: FastifyReply) => {
-      try {
-        const { user_id } = request.query;
-
-        if (!user_id) {
-          return reply.status(400).send({
-            success: false,
-            error: 'user_id is required',
-          } satisfies ApiResponse);
-        }
-
-        const performance = await investmentService.getInvestmentPerformance(user_id);
-
-        return reply.send({
-          success: true,
-          data: performance,
-        } satisfies ApiResponse);
-      } catch (error) {
-        request.log.error(error, 'Failed to get investment performance');
-        return reply.status(500).send({
-          success: false,
-          error: 'Failed to get investment performance',
         } satisfies ApiResponse);
       }
     }

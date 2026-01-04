@@ -3,7 +3,7 @@
  */
 
 import * as investmentRepo from '../repositories/investment-repository.js';
-import type { CreateInvestmentInput, InvestmentType } from '../types/index.js';
+import type { CreateInvestmentInput, Investment, InvestmentType } from '../types/index.js';
 
 /**
  * Create a new investment
@@ -41,7 +41,7 @@ export async function listUserInvestments(
  */
 export async function updateInvestment(
   id: string,
-  data: Partial<Omit<any, 'id' | 'user_id' | 'created_at' | 'updated_at'>>
+  data: Partial<Omit<Investment, 'id' | 'user_id' | 'created_at' | 'updated_at'>>
 ) {
   const investment = await investmentRepo.updateInvestment(id, data);
 

@@ -31,6 +31,31 @@ export async function categoryRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
+   * Get system categories
+   * GET /api/categories/system?type={income|expense}
+   */
+  app.get(
+    '/system',
+    async (request: FastifyRequest<{ Querystring: { type?: string } }>, reply: FastifyReply) => {
+      try {
+        const { type } = request.query;
+        const categories = await categoryRepo.getSystemCategories(type as any);
+
+        return reply.send({
+          success: true,
+          data: categories,
+        } satisfies ApiResponse);
+      } catch (error) {
+        request.log.error(error, 'Failed to get system categories');
+        return reply.status(500).send({
+          success: false,
+          error: 'Failed to get system categories',
+        } satisfies ApiResponse);
+      }
+    }
+  );
+
+  /**
    * Get category by ID
    * GET /api/categories/:id
    */
@@ -92,31 +117,6 @@ export async function categoryRoutes(app: FastifyInstance): Promise<void> {
         return reply.status(500).send({
           success: false,
           error: 'Failed to list categories',
-        } satisfies ApiResponse);
-      }
-    }
-  );
-
-  /**
-   * Get system categories
-   * GET /api/categories/system?type={income|expense}
-   */
-  app.get(
-    '/system',
-    async (request: FastifyRequest<{ Querystring: { type?: string } }>, reply: FastifyReply) => {
-      try {
-        const { type } = request.query;
-        const categories = await categoryRepo.getSystemCategories(type as any);
-
-        return reply.send({
-          success: true,
-          data: categories,
-        } satisfies ApiResponse);
-      } catch (error) {
-        request.log.error(error, 'Failed to get system categories');
-        return reply.status(500).send({
-          success: false,
-          error: 'Failed to get system categories',
         } satisfies ApiResponse);
       }
     }

@@ -169,10 +169,10 @@ export async function deleteOldReadAlerts(daysOld = 30): Promise<number> {
   const sql = `
     DELETE FROM alerts
     WHERE is_read = true
-      AND created_at < (CURRENT_TIMESTAMP - INTERVAL '${daysOld} days')
+      AND created_at < (CURRENT_TIMESTAMP - make_interval(days => $1))
   `;
 
-  const result = await query(sql);
+  const result = await query(sql, [daysOld]);
   return result.length;
 }
 
