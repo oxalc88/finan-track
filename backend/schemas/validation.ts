@@ -8,7 +8,8 @@ import { z } from 'zod';
 export const uuidSchema = z.string().uuid();
 export const phoneSchema = z.string().regex(/^\+?[1-9]\d{1,14}$/);
 export const emailSchema = z.string().email();
-export const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+export const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).transform((val) => new Date(val));
+export const datetimeSchema = z.string().datetime().transform((val) => new Date(val));
 export const currencySchema = z.string().length(3).default('USD');
 export const positiveNumberSchema = z.number().positive();
 export const nonNegativeNumberSchema = z.number().min(0);
@@ -181,7 +182,7 @@ export const createAlertSchema = z.object({
   message: z.string().min(1),
   related_entity_type: z.string().max(50).optional(),
   related_entity_id: uuidSchema.optional(),
-  scheduled_for: z.string().datetime().optional(),
+  scheduled_for: datetimeSchema.optional(),
 });
 
 export const updateAlertSchema = z.object({

@@ -222,7 +222,8 @@ async function getOrCreateUserByPhone(
     });
   }
 
-  return user;
+  // User phone is guaranteed to be non-null at this point
+  return { id: user.id, phone: user.phone! };
 }
 
 /**

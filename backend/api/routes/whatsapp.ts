@@ -146,7 +146,7 @@ export async function whatsappRoutes(app: FastifyInstance): Promise<void> {
    * Health check for WhatsApp integration
    * GET /api/whatsapp/health
    */
-  app.get('/health', async (request: FastifyRequest, reply: FastifyReply) => {
+  app.get('/health', async (_request: FastifyRequest, reply: FastifyReply) => {
     const config = await import('../../config/env.js').then((m) => m.getConfig());
 
     const status = {

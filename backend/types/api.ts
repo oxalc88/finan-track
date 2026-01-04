@@ -33,7 +33,8 @@ export interface UploadInvoiceRequest {
   user_id: string;
 }
 
-export interface InvoiceWithItems extends Invoice {
+export interface InvoiceWithItems {
+  invoice: Invoice;
   items: InvoiceItem[];
 }
 

@@ -99,7 +99,7 @@ export async function sendMessage(message: WhatsAppMessage): Promise<{ message_i
     throw new Error(`Failed to send WhatsApp message: ${response.statusText}`);
   }
 
-  return response.json();
+  return (await response.json()) as { message_id: string };
 }
 
 /**

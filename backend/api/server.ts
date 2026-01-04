@@ -26,8 +26,8 @@ import { whatsappRoutes } from './routes/whatsapp.js';
  * Create and configure the Fastify server
  */
 export async function createServer() {
-  // Load configuration
-  const config = loadConfig();
+  // Load configuration to ensure env vars are validated
+  loadConfig();
 
   // Initialize logger
   const logger = initLogger();
@@ -97,7 +97,7 @@ export async function createServer() {
         logger.info('Server closed successfully');
         process.exit(0);
       } catch (error) {
-        logger.error('Error during shutdown:', error);
+        logger.error(error, 'Error during shutdown');
         process.exit(1);
       }
     });
