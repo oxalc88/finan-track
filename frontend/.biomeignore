@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+coverage/
+.env

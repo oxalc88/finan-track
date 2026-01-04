@@ -41,39 +41,45 @@ This application automates invoice ingestion from WhatsApp, extracts structured 
 
 ## Project Structure
 
-**Two independent folders:**
+**Monorepo organization with clear separation of concerns:**
 
 ```
 finan-track/
 │
-├── app/                       # 📦 APPLICATION CODE (build this first)
-│   ├── api/                  # HTTP routes and middleware
+├── .env.example               # Development environment variables
+├── env.production.example     # Production environment template
+├── docker-compose.yml         # Development infrastructure (Postgres, MinIO, etc.)
+├── docker-compose.prod.yml    # Production full stack deployment
+├── package.json               # Monorepo workspace configuration
+│
+├── backend/                   # 📦 BACKEND SERVICE
+│   ├── api/                  # HTTP routes and middleware (Fastify)
 │   ├── services/             # Business logic (pure functions)
-│   ├── repositories/         # Data access layer
+│   ├── repositories/         # Data access layer (PostgreSQL)
+│   ├── migrations/           # Database migrations
 │   ├── jobs/                 # Background workers
 │   ├── lib/                  # External service clients (cloud-agnostic)
 │   ├── types/                # TypeScript types
 │   ├── utils/                # Helper functions
-│   ├── config/               # Configuration management
-│   └── frontend/             # Dashboard UI
+│   ├── config/               # Configuration management (Zod schemas)
+│   ├── Dockerfile            # Backend container build
+│   └── package.json          # Backend dependencies
 │
-├── infra/                     # 🏗️ INFRASTRUCTURE (set up later with Terraform)
-│   └── terraform/
-│       ├── modules/          # Reusable Terraform modules
-│       ├── providers/        # AWS / Cloudflare / Hetzner
-│       │   ├── aws/         # For Lambda or ECS
-│       │   ├── cloudflare/  # For Workers
-│       │   └── hetzner/     # For Docker on VPS
-│       └── environments/     # dev / staging / production
+├── frontend/                  # 🎨 FRONTEND SERVICE
+│   ├── src/                  # React components and pages
+│   ├── tests/                # Playwright tests
+│   ├── screenshots/          # Dashboard screenshots
+│   ├── theme.config.json     # Theme configuration
+│   ├── Dockerfile            # Frontend container build (nginx)
+│   └── package.json          # Frontend dependencies
 │
-├── deployments/               # 🚀 DEPLOYMENT CONFIGS
-│   ├── docker/               # Docker & Docker Compose
-│   ├── aws/                  # Lambda or ECS configs
-│   └── cloudflare/           # Workers configs
+├── docs/                      # 📚 DOCUMENTATION
+│   ├── architecture/         # Architecture design docs
+│   ├── deployment/           # Deployment guides
+│   └── guides/               # Integration guides
 │
-├── migrations/                # Database migrations
-├── docs/                      # Documentation
-└── theme.config.json          # Theme customization
+└── scripts/                   # 🔧 UTILITY SCRIPTS
+    └── setup-hetzner.sh      # Automated VPS deployment
 ```
 
 **Key principle:** Application and infrastructure are **completely independent**.
@@ -86,11 +92,11 @@ See [docs/APP_INFRA_SEPARATION.md](./docs/APP_INFRA_SEPARATION.md) for detailed 
 
 ## Theme Customization
 
-The application uses a configurable theme system powered by Tailwind CSS. All colors can be customized by editing `theme.config.json`.
+The application uses a configurable theme system powered by Tailwind CSS. All colors can be customized by editing `frontend/theme.config.json`.
 
 ### Changing Colors
 
-1. Open `theme.config.json`
+1. Open `frontend/theme.config.json`
 2. Modify the color scales for your desired palette:
 
 ```json
@@ -126,18 +132,20 @@ Each color family (primary, secondary, accent, etc.) follows Tailwind's scale co
 
 ### Applying Theme Changes
 
-The theme is loaded at build time and generates CSS custom properties. After modifying `theme.config.json`:
+The theme is loaded at build time and generates CSS custom properties. After modifying `frontend/theme.config.json`:
 
-1. Rebuild the frontend: `npm run build` (or equivalent)
+1. Rebuild the frontend: `cd frontend && npm run build`
 2. The new colors will be applied throughout the application
 
 ## Documentation
 
-- **[LAYERED_ARCHITECTURE.md](./LAYERED_ARCHITECTURE.md)** - Main architecture overview (start here)
-- **[docs/PHASE_1_LAYERED.md](./docs/PHASE_1_LAYERED.md)** - Detailed implementation guide
-- **[docs/ARCHITECTURE_COMPARISON.md](./docs/ARCHITECTURE_COMPARISON.md)** - Why we chose this architecture
-- **[docs/APP_INFRA_SEPARATION.md](./docs/APP_INFRA_SEPARATION.md)** - Application vs infrastructure separation
-- **[docs/ULTRACITE_SETUP.md](./docs/ULTRACITE_SETUP.md)** - Code quality and linting setup
+- **[docs/README.md](./docs/README.md)** - Documentation index (start here)
+- **[docs/architecture/LAYERED_ARCHITECTURE.md](./docs/architecture/LAYERED_ARCHITECTURE.md)** - Main architecture overview
+- **[docs/architecture/ARCHITECTURE_COMPARISON.md](./docs/architecture/ARCHITECTURE_COMPARISON.md)** - Why we chose this architecture
+- **[docs/architecture/APP_INFRA_SEPARATION.md](./docs/architecture/APP_INFRA_SEPARATION.md)** - Application vs infrastructure separation
+- **[docs/deployment/DEPLOYMENT.md](./docs/deployment/DEPLOYMENT.md)** - Deployment options overview
+- **[docs/deployment/HETZNER_DEPLOY.md](./docs/deployment/HETZNER_DEPLOY.md)** - Hetzner VPS deployment guide
+- **[CLAUDE.md](./CLAUDE.md)** - Development guidelines and code patterns
 
 ## Development Workflow
 
@@ -170,7 +178,7 @@ npm run migrate
 npm run dev
 
 # 6. Start frontend (in another terminal)
-cd app/frontend && npm run dev
+npm run dev:frontend
 ```
 
 ### Available Commands

@@ -21,34 +21,50 @@ Routes (HTTP) → Services (Business Logic) → Repositories (Data) → Librarie
 ```
 
 **Key architectural files to read**:
-- `LAYERED_ARCHITECTURE.md` - Main architecture overview (START HERE)
-- `docs/PHASE_1_LAYERED.md` - Detailed implementation guide
-- `docs/ARCHITECTURE_COMPARISON.md` - Why we chose this architecture
-- `docs/APP_INFRA_SEPARATION.md` - Application vs infrastructure separation
-- `docs/ULTRACITE_SETUP.md` - Code quality and linting setup
+- `docs/architecture/LAYERED_ARCHITECTURE.md` - Main architecture overview (START HERE)
+- `docs/architecture/ARCHITECTURE_COMPARISON.md` - Why we chose this architecture
+- `docs/architecture/APP_INFRA_SEPARATION.md` - Application vs infrastructure separation
 
 ### Directory Structure
 
 ```
-app/
-├── api/                    # HTTP routes and middleware (Fastify)
-├── services/               # Business logic (pure functions)
-├── repositories/           # Data access layer (PostgreSQL)
-├── jobs/                   # Background workers
-├── lib/                    # External service clients (cloud-agnostic)
-│   ├── storage.ts         # S3/R2/MinIO client
-│   ├── queue.ts           # SQS/RabbitMQ client
-│   ├── whatsapp.ts        # Kapso.ai client
-│   ├── ocr.ts             # OCR service client
-│   └── cache.ts           # Redis/KV client
-├── types/                  # TypeScript types
-├── utils/                  # Helper functions
-├── config/                 # Configuration management (Zod schemas)
-└── frontend/               # Dashboard UI (React + Vite + Tailwind)
-
-infra/terraform/            # Infrastructure as Code (Terraform)
-deployments/docker/         # Docker Compose for local dev
-migrations/                 # Database migrations
+finan-track/                # Monorepo root
+├── .env.example            # Development environment variables
+├── env.production.example  # Production environment template
+├── docker-compose.yml      # Development infrastructure (Postgres, MinIO, Redis, RabbitMQ)
+├── docker-compose.prod.yml # Production full stack deployment
+├── package.json            # Monorepo workspace configuration
+│
+├── backend/                # Backend service
+│   ├── api/               # HTTP routes and middleware (Fastify)
+│   ├── services/          # Business logic (pure functions)
+│   ├── repositories/      # Data access layer (PostgreSQL)
+│   ├── migrations/        # Database migrations
+│   ├── lib/               # External service clients (cloud-agnostic)
+│   │   ├── storage.ts    # S3/R2/MinIO client
+│   │   ├── queue.ts      # SQS/RabbitMQ client
+│   │   ├── whatsapp.ts   # Kapso.ai client
+│   │   └── ocr.ts        # OCR service client
+│   ├── types/             # TypeScript types
+│   ├── utils/             # Helper functions
+│   ├── config/            # Configuration management (Zod schemas)
+│   ├── Dockerfile         # Backend container build
+│   └── package.json       # Backend dependencies
+│
+├── frontend/               # Frontend service (Dashboard UI)
+│   ├── src/               # React components and pages
+│   ├── tests/             # Playwright tests
+│   ├── screenshots/       # Dashboard screenshots
+│   ├── theme.config.json  # Theme configuration
+│   ├── Dockerfile         # Frontend container build (nginx)
+│   └── package.json       # Frontend dependencies
+│
+├── docs/                   # Documentation
+│   ├── architecture/      # System design docs
+│   ├── deployment/        # Deployment guides
+│   └── guides/            # Integration guides
+│
+└── scripts/                # Utility scripts (deployment, setup)
 ```
 
 ### Technology Stack
@@ -135,15 +151,24 @@ npm run seed
 ### Docker
 
 ```bash
-# Start all local services
+# Development - Start infrastructure services (Postgres, MinIO, Redis, RabbitMQ)
 npm run docker:up
 
-# Stop all services
+# Development - Stop all services
 npm run docker:down
 
-# Build Docker image
-npm run docker:build
+# Development - View logs
+npm run docker:logs
+
+# Production - Build and start full stack (backend + frontend + infrastructure)
+npm run docker:prod:build
+npm run docker:prod:up
+
+# Production - Stop production stack
+npm run docker:prod:down
 ```
+
+**Note**: Development docker-compose only runs infrastructure. Run backend/frontend with `npm run dev` for hot-reloading.
 
 ## Code Patterns
 
@@ -322,11 +347,9 @@ npm run lint
 
 **Important**: When making changes, run `npm run check` before committing. This runs typecheck + lint + tests.
 
-See `docs/ULTRACITE_SETUP.md` for details.
-
 ## Theme Customization
 
-The frontend uses a **configurable theme system** powered by Tailwind CSS. Colors can be customized by editing `theme.config.json`.
+The frontend uses a **configurable theme system** powered by Tailwind CSS. Colors can be customized by editing `frontend/theme.config.json`.
 
 ### Color Families
 - `primary` - Main brand color
@@ -336,9 +359,9 @@ The frontend uses a **configurable theme system** powered by Tailwind CSS. Color
 - `neutral` - Text and neutral elements
 
 ### Applying Changes
-After modifying `theme.config.json`, rebuild the frontend:
+After modifying `frontend/theme.config.json`, rebuild the frontend:
 ```bash
-cd app/frontend && npm run build
+cd frontend && npm run build
 ```
 
 ## Environment Variables
@@ -446,24 +469,27 @@ See `docs/APP_INFRA_SEPARATION.md` for details.
 ## Quick Reference
 
 ### File Locations
-- Configuration: `app/config/env.ts`
-- Database connection: `app/repositories/db.ts`
-- Cloud-agnostic libraries: `app/lib/*.ts`
-- Business logic: `app/services/*.ts`
-- Data access: `app/repositories/*.ts`
-- HTTP routes: `app/api/routes/*.ts`
-- Types: `app/types/*.ts`
+- Configuration: `backend/config/env.ts`
+- Database connection: `backend/repositories/db.ts`
+- Cloud-agnostic libraries: `backend/lib/*.ts`
+- Business logic: `backend/services/*.ts`
+- Data access: `backend/repositories/*.ts`
+- HTTP routes: `backend/api/routes/*.ts`
+- Types: `backend/types/*.ts`
+- Frontend: `frontend/src/`
 
 ### Common Tasks
-- Add new route: Create file in `app/api/routes/`, register in `app/api/server.ts`
-- Add new service: Create file in `app/services/`, import in routes
-- Add new repository: Create file in `app/repositories/`, import in services
-- Add new type: Create file in `app/types/`, export from `app/types/index.ts`
-- Add migration: Create `.sql` file in `migrations/`
+- Add new route: Create file in `backend/api/routes/`, register in `backend/api/server.ts`
+- Add new service: Create file in `backend/services/`, import in routes
+- Add new repository: Create file in `backend/repositories/`, import in services
+- Add new type: Create file in `backend/types/`, export from `backend/types/index.ts`
+- Add migration: Create `.sql` file in `backend/migrations/`
+- Add frontend component: Create file in `frontend/src/components/`
 
 ### Documentation
-- Architecture: `LAYERED_ARCHITECTURE.md`
-- Implementation guide: `docs/PHASE_1_LAYERED.md`
-- Architecture comparison: `docs/ARCHITECTURE_COMPARISON.md`
-- App/infra separation: `docs/APP_INFRA_SEPARATION.md`
-- Linting/formatting: `docs/ULTRACITE_SETUP.md`
+- All docs: `docs/README.md` (index with navigation)
+- Architecture: `docs/architecture/LAYERED_ARCHITECTURE.md`
+- Architecture comparison: `docs/architecture/ARCHITECTURE_COMPARISON.md`
+- App/infra separation: `docs/architecture/APP_INFRA_SEPARATION.md`
+- Deployment guides: `docs/deployment/`
+- Integration guides: `docs/guides/`

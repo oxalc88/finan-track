@@ -1,0 +1,45 @@
+{
+  "name": "finan-track-monorepo",
+  "version": "1.0.0",
+  "description": "Cloud-agnostic invoice processing and financial tracking application - Monorepo",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:all": "docker compose up -d",
+    "build": "npm run build --workspaces",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend",
+    "start": "npm run start --workspace=backend",
+    "test": "npm run test --workspaces",
+    "typecheck": "npm run typecheck --workspaces",
+    "format": "npm run format --workspaces",
+    "lint": "npm run lint --workspaces",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "migrate": "npm run migrate --workspace=backend",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "docker:prod:up": "docker compose -f docker-compose.prod.yml up -d",
+    "docker:prod:down": "docker compose -f docker-compose.prod.yml down",
+    "docker:prod:build": "docker compose -f docker-compose.prod.yml build"
+  },
+  "keywords": [
+    "invoice",
+    "ocr",
+    "financial-tracking",
+    "whatsapp",
+    "cloud-agnostic",
+    "monorepo"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,0 +1,31 @@
+# GitGuardian configuration for secret scanning
+# Documentation: https://docs.gitguardian.com/internal-repositories-monitoring/reference/gitguardian_yaml
+# See SECURITY.md for explanation of development defaults
+
+version: 2
+
+# Exclude paths that don't need secret scanning
+paths-ignore:
+  - "**/*.md"
+  - "**/package-lock.json"
+  - "**/yarn.lock"
+  - ".env.example"
+  - "**/screenshots/**"
+  - "**/coverage/**"
+  - "**/node_modules/**"
+
+# Development-only defaults that are NOT secrets
+# These are publicly documented default credentials for official Docker images
+# They are safe for local development and overridden in production
+matches-ignore:
+  # PostgreSQL official default: https://hub.docker.com/_/postgres
+  - name: "PostgreSQL Docker Default Password"
+    match: "postgres"
+
+  # MinIO official default: https://min.io/docs/minio/container/
+  - name: "MinIO Docker Default Credentials"
+    match: "minioadmin"
+
+  # RabbitMQ official default: https://hub.docker.com/_/rabbitmq
+  - name: "RabbitMQ Docker Default Password"
+    match: "guest"
