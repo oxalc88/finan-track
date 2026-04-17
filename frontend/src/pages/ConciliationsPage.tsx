@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import ConciliationDetail from '../components/ConciliationDetail';
+import MobileHeader from '../components/MobileHeader';
 import { useConciliations } from '../hooks/useConciliations';
+import { useIsMobile } from '../hooks/useIsMobile';
 import type { EstadoConciliacion } from '../types/domain';
 
 const STATE_VARIANT: Record<
@@ -17,17 +19,24 @@ const STATE_VARIANT: Record<
 export default function ConciliationsPage(): JSX.Element {
   const { data, isLoading, error } = useConciliations();
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <header className="bg-white border-b border-neutral-200 shadow-sm">
-        <div className="max-w-container mx-auto px-6 py-6">
-          <h1 className="text-3xl font-bold text-neutral-900">Conciliations</h1>
-          <p className="text-neutral-600 mt-1">
-            Cross-reference runs and their discrepancies.
-          </p>
-        </div>
-      </header>
+      {isMobile ? (
+        <MobileHeader title="Conciliations" />
+      ) : (
+        <header className="bg-white border-b border-neutral-200 shadow-sm">
+          <div className="max-w-container mx-auto px-6 py-6">
+            <h1 className="text-3xl font-bold text-neutral-900">
+              Conciliations
+            </h1>
+            <p className="text-neutral-600 mt-1">
+              Cross-reference runs and their discrepancies.
+            </p>
+          </div>
+        </header>
+      )}
 
       <main className="max-w-container mx-auto px-6 py-8 grid gap-6 lg:grid-cols-[minmax(0,22rem)_1fr]">
         <section>

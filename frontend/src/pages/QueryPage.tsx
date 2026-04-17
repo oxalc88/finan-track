@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
+import MobileHeader from '../components/MobileHeader';
 import QueryResult from '../components/QueryResult';
+import { useIsMobile } from '../hooks/useIsMobile';
 import { postQuery } from '../lib/api';
 import type { QueryAnswer } from '../types/domain';
 
@@ -9,6 +11,7 @@ export default function QueryPage(): JSX.Element {
   const [result, setResult] = useState<QueryAnswer | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,14 +33,18 @@ export default function QueryPage(): JSX.Element {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <header className="bg-white border-b border-neutral-200 shadow-sm">
-        <div className="max-w-container mx-auto px-6 py-6">
-          <h1 className="text-3xl font-bold text-neutral-900">Ask</h1>
-          <p className="text-neutral-600 mt-1">
-            Preguntale a tus finanzas en español.
-          </p>
-        </div>
-      </header>
+      {isMobile ? (
+        <MobileHeader title="Ask" />
+      ) : (
+        <header className="bg-white border-b border-neutral-200 shadow-sm">
+          <div className="max-w-container mx-auto px-6 py-6">
+            <h1 className="text-3xl font-bold text-neutral-900">Ask</h1>
+            <p className="text-neutral-600 mt-1">
+              Preguntale a tus finanzas en español.
+            </p>
+          </div>
+        </header>
+      )}
 
       <main className="max-w-container mx-auto px-6 py-8 space-y-6">
         <form onSubmit={onSubmit} className="space-y-3">

@@ -4,6 +4,7 @@ import AccountsSummary from '../components/AccountsSummary';
 import CashFlowInsights from '../components/CashFlowInsights';
 import CreditCardTracker from '../components/CreditCardTracker';
 import MobileDashboard from '../components/MobileDashboard';
+import MobileHeader from '../components/MobileHeader';
 import OverviewCards from '../components/OverviewCards';
 import { useDashboard } from '../hooks/useDashboard';
 import { useIsMobile } from '../hooks/useIsMobile';
@@ -47,14 +48,14 @@ export default function DashboardHome(): JSX.Element {
   if (isMobile) {
     return (
       <div className="min-h-screen bg-neutral-50">
-        <header className="bg-white border-b border-neutral-200 shadow-sm">
-          <div className="px-4 py-4">
-            <h1 className="text-2xl font-bold text-neutral-900">FinanTrack</h1>
-            <p className="text-sm text-neutral-600">{format(new Date(), 'EEEE, MMM d')}</p>
-          </div>
-        </header>
+        <MobileHeader title="FinanTrack" />
+        <div className="px-4 py-2">
+          <p className="text-sm text-neutral-600">
+            {format(new Date(), 'EEEE, MMM d')}
+          </p>
+        </div>
 
-        <main className="pt-4">
+        <main className="pt-2">
           <MobileDashboard
             accounts={data.accounts}
             creditCards={data.creditCards}
