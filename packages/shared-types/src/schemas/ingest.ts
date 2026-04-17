@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 export const IngestRequestSchema = z.object({
-  canal: z.enum(['telegram', 'email', 'drive', 'manual']),
-  entidad_id: z.string().min(1),
-  producto_id: z.string().min(1),
+  canal: z.enum(['TELEGRAM', 'EMAIL', 'DRIVE']),
+  entidad_financiera_id: z.string().min(1).optional(),
+  producto_credito_id: z.string().min(1).optional(),
   password: z.string().optional(),
 });
 
-export type IngestRequest = z.infer<typeof IngestRequestSchema>;
+export type IngestRequestInput = z.infer<typeof IngestRequestSchema>;

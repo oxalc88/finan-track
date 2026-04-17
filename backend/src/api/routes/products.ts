@@ -1,3 +1,7 @@
+import {
+	CreateProductSchema,
+	UpdateProductSchema,
+} from "@finanzas/shared-types";
 import type Database from "better-sqlite3";
 import { Hono } from "hono";
 import {
@@ -31,13 +35,13 @@ export function createProductsRoutes(db: Database.Database): Hono {
 	});
 
 	app.post("/", async (c) => {
-		const body = await c.req.json();
+		const body = CreateProductSchema.parse(await c.req.json());
 		const product = create(db, body);
 		return c.json(product, 201);
 	});
 
 	app.put("/:id", async (c) => {
-		const body = await c.req.json();
+		const body = UpdateProductSchema.parse(await c.req.json());
 		const product = update(db, { ...body, id: c.req.param("id") });
 		if (!product) {
 			return c.json({ error: "Not found" }, 404);

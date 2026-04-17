@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import { createDb } from "../db/connection.js";
 import { runMigrations } from "../db/schema.js";
 import { errorHandler } from "./middleware/error-handler.js";
+import { validationMiddleware } from "./middleware/validation.js";
 import { createAccountsRoutes } from "./routes/accounts.js";
 import { createCategoriesRoutes } from "./routes/categories.js";
 import { createConciliationsRoutes } from "./routes/conciliations.js";
@@ -20,6 +21,7 @@ runMigrations(db);
 const app = new Hono();
 
 app.onError(errorHandler);
+app.use("*", validationMiddleware);
 
 app.route("/api/entities", createEntitiesRoutes(db));
 app.route("/api/accounts", createAccountsRoutes(db));
