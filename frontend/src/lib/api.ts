@@ -1,11 +1,12 @@
+import type { DashboardData } from '@finanzas/shared-types';
 import type {
-  ConciliationMatch,
-  ConciliationRow,
-  DashboardData,
-  DiscrepancyRow,
-  DocumentPipelineRow,
-  QueryResult,
-} from '@finanzas/shared-types';
+  Conciliacion,
+  Discrepancia,
+  DocumentoFuente,
+  EstadoDocumento,
+  MatchConciliacion,
+  QueryAnswer,
+} from '../types/domain';
 
 const API_BASE_URL = '/api';
 
@@ -26,14 +27,14 @@ export function fetchDashboardData(): Promise<DashboardData> {
 }
 
 export interface DocumentsFilter {
-  estado?: string;
+  estado?: EstadoDocumento;
   limit?: number;
   offset?: number;
 }
 
 export function fetchDocuments(
   filter?: DocumentsFilter
-): Promise<DocumentPipelineRow[]> {
+): Promise<DocumentoFuente[]> {
   const params = new URLSearchParams();
   if (filter?.estado) {
     params.set('estado', filter.estado);
@@ -45,7 +46,7 @@ export function fetchDocuments(
     params.set('offset', String(filter.offset));
   }
   const qs = params.toString();
-  return request<DocumentPipelineRow[]>(`/documents${qs ? `?${qs}` : ''}`);
+  return request<DocumentoFuente[]>(`/documents${qs ? `?${qs}` : ''}`);
 }
 
 export interface PresignedUrl {
@@ -57,35 +58,35 @@ export function fetchDocumentUrl(id: string): Promise<PresignedUrl> {
   return request<PresignedUrl>(`/documents/${encodeURIComponent(id)}/url`);
 }
 
-export function fetchConciliations(): Promise<ConciliationRow[]> {
-  return request<ConciliationRow[]>('/conciliations');
+export function fetchConciliations(): Promise<Conciliacion[]> {
+  return request<Conciliacion[]>('/conciliations');
 }
 
 export function fetchConciliationMatches(
   id: string
-): Promise<ConciliationMatch[]> {
-  return request<ConciliationMatch[]>(
+): Promise<MatchConciliacion[]> {
+  return request<MatchConciliacion[]>(
     `/conciliations/${encodeURIComponent(id)}/matches`
   );
 }
 
 export function fetchConciliationDiscrepancias(
   id: string
-): Promise<DiscrepancyRow[]> {
-  return request<DiscrepancyRow[]>(
+): Promise<Discrepancia[]> {
+  return request<Discrepancia[]>(
     `/conciliations/${encodeURIComponent(id)}/discrepancias`
   );
 }
 
-export function fetchDiscrepanciasPending(): Promise<DiscrepancyRow[]> {
-  return request<DiscrepancyRow[]>('/conciliations/discrepancias/pending');
+export function fetchDiscrepanciasPending(): Promise<Discrepancia[]> {
+  return request<Discrepancia[]>('/conciliations/discrepancias/pending');
 }
 
 export function resolveDiscrepancia(
   id: string,
   resolucion: string
-): Promise<DiscrepancyRow> {
-  return request<DiscrepancyRow>(
+): Promise<Discrepancia> {
+  return request<Discrepancia>(
     `/conciliations/discrepancias/${encodeURIComponent(id)}/resolve`,
     {
       method: 'PATCH',
@@ -94,15 +95,15 @@ export function resolveDiscrepancia(
   );
 }
 
-export function ignoreDiscrepancia(id: string): Promise<DiscrepancyRow> {
-  return request<DiscrepancyRow>(
+export function ignoreDiscrepancia(id: string): Promise<Discrepancia> {
+  return request<Discrepancia>(
     `/conciliations/discrepancias/${encodeURIComponent(id)}/ignore`,
     { method: 'PATCH' }
   );
 }
 
-export function postQuery(question: string): Promise<QueryResult> {
-  return request<QueryResult>('/query', {
+export function postQuery(question: string): Promise<QueryAnswer> {
+  return request<QueryAnswer>('/query', {
     method: 'POST',
     body: JSON.stringify({ question }),
   });

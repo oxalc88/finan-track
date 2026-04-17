@@ -164,6 +164,39 @@ export default function MobileDashboard({
               <p className="text-xs text-muted-foreground mt-1">Insights</p>
             </CardContent>
           </Card>
+
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent"
+            onClick={() => onNavigate('documents')}
+          >
+            <CardContent className="p-4">
+              <div className="text-3xl mb-2">📄</div>
+              <p className="font-semibold text-foreground">Documents</p>
+              <p className="text-xs text-muted-foreground mt-1">Pipeline</p>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent"
+            onClick={() => onNavigate('conciliations')}
+          >
+            <CardContent className="p-4">
+              <div className="text-3xl mb-2">🔁</div>
+              <p className="font-semibold text-foreground">Conciliations</p>
+              <p className="text-xs text-muted-foreground mt-1">Reconcile</p>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent"
+            onClick={() => onNavigate('query')}
+          >
+            <CardContent className="p-4">
+              <div className="text-3xl mb-2">❓</div>
+              <p className="font-semibold text-foreground">Ask</p>
+              <p className="text-xs text-muted-foreground mt-1">Query</p>
+            </CardContent>
+          </Card>
         </div>
       </section>
     </div>
