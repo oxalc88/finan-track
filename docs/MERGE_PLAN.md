@@ -22,11 +22,17 @@
   replaces the mock stub with thin `fetch` wrappers
   (`fetchDashboardData`, documents, conciliations, discrepancias,
   `postQuery`). `formatCurrency` now defaults to `PEN`/`es-PE`.
-  Pre-existing pages that reference dropped `Investment`/`Debt`/
-  `Notification` fields still fail to typecheck — those are Phase 6
-  cleanup scope.
-- **Phase 5+** — not started. Pick up from the "Phase 5 — New Pages"
-  section below.
+- **Phase 6** — Cleanup (Investments/Debts/Notifications) — done on
+  `claude/phase-2-tests-phase-3-start-t5HUb`. Dropped pages
+  (`Investments`, `Debt`, `Notifications`) and their components
+  deleted; `OverviewCards` reduced to 3 cards; `DashboardHome` and
+  `MobileDashboard` trimmed to the remaining sections. Orphan
+  `pages/Dashboard.tsx` removed. `vite-env.d.ts` added so the CSS
+  side-effect import in `main.tsx` typechecks. Frontend
+  `tsc --noEmit` is now clean.
+- **Phase 5** — New pages (Documents, Conciliations, Query) — not
+  started. Pick up from the "Phase 5 — New Pages" section below.
+- **Phase 7** — Production deployment (nginx + Hono) — not started.
 
 ---
 
