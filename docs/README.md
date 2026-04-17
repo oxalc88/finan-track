@@ -2,6 +2,13 @@
 
 Welcome to the **finan-track** documentation. This directory contains all project documentation organized by category.
 
+> **Heads-up (2026-04):** the backend has been replaced with the
+> Hono + SQLite stack from the app-finance merge. Many architecture
+> documents below still describe the original Fastify/PostgreSQL
+> design. The current source of truth is
+> [MERGE_PLAN.md](./MERGE_PLAN.md) and the top-level
+> [`README.md`](../README.md).
+
 ---
 
 ## 📚 Documentation Structure
