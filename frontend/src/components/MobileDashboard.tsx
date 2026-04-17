@@ -1,12 +1,11 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatCurrency, getDaysUntil } from '../lib/formatters';
-import type { Account, CreditCard, Notification } from '../types';
+import type { Account, CreditCard } from '../types';
 
 interface MobileDashboardProps {
   accounts: Account[];
   creditCards: CreditCard[];
-  notifications: Notification[];
   onNavigate: (section: string) => void;
 }
 
@@ -23,7 +22,6 @@ interface PriorityCard {
 export default function MobileDashboard({
   accounts,
   creditCards,
-  notifications,
   onNavigate,
 }: MobileDashboardProps): JSX.Element {
   // Calculate total cash
@@ -136,23 +134,23 @@ export default function MobileDashboard({
         <div className="grid grid-cols-2 gap-3 px-4">
           <Card
             className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent"
-            onClick={() => onNavigate('investments')}
+            onClick={() => onNavigate('accounts')}
           >
             <CardContent className="p-4">
-              <div className="text-3xl mb-2">📈</div>
-              <p className="font-semibold text-foreground">Investments</p>
-              <p className="text-xs text-muted-foreground mt-1">Portfolio</p>
+              <div className="text-3xl mb-2">🏦</div>
+              <p className="font-semibold text-foreground">Accounts</p>
+              <p className="text-xs text-muted-foreground mt-1">Deposits</p>
             </CardContent>
           </Card>
 
           <Card
             className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent"
-            onClick={() => onNavigate('debt')}
+            onClick={() => onNavigate('credit-cards')}
           >
             <CardContent className="p-4">
-              <div className="text-3xl mb-2">📊</div>
-              <p className="font-semibold text-foreground">Debt</p>
-              <p className="text-xs text-muted-foreground mt-1">Overview</p>
+              <div className="text-3xl mb-2">💳</div>
+              <p className="font-semibold text-foreground">Cards</p>
+              <p className="text-xs text-muted-foreground mt-1">Credit</p>
             </CardContent>
           </Card>
 
@@ -164,22 +162,6 @@ export default function MobileDashboard({
               <div className="text-3xl mb-2">💸</div>
               <p className="font-semibold text-foreground">Cash Flow</p>
               <p className="text-xs text-muted-foreground mt-1">Insights</p>
-            </CardContent>
-          </Card>
-
-          <Card
-            className="cursor-pointer hover:shadow-md transition-shadow active:bg-accent relative"
-            onClick={() => onNavigate('notifications')}
-          >
-            <CardContent className="p-4">
-              <div className="text-3xl mb-2">🔔</div>
-              <p className="font-semibold text-foreground">Alerts</p>
-              <p className="text-xs text-muted-foreground mt-1">Notifications</p>
-              {notifications.filter((n) => !n.read).length > 0 && (
-                <Badge variant="error" className="absolute top-2 right-2">
-                  {notifications.filter((n) => !n.read).length}
-                </Badge>
-              )}
             </CardContent>
           </Card>
         </div>

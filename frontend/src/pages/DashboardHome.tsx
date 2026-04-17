@@ -3,10 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AccountsSummary from '../components/AccountsSummary';
 import CashFlowInsights from '../components/CashFlowInsights';
 import CreditCardTracker from '../components/CreditCardTracker';
-import DebtOverview from '../components/DebtOverview';
-import InvestmentsSummary from '../components/InvestmentsSummary';
 import MobileDashboard from '../components/MobileDashboard';
-import NotificationsAlerts from '../components/NotificationsAlerts';
 import OverviewCards from '../components/OverviewCards';
 import { useDashboard } from '../hooks/useDashboard';
 import { useIsMobile } from '../hooks/useIsMobile';
@@ -61,7 +58,6 @@ export default function DashboardHome(): JSX.Element {
           <MobileDashboard
             accounts={data.accounts}
             creditCards={data.creditCards}
-            notifications={data.notifications}
             onNavigate={handleNavigate}
           />
         </main>
@@ -101,22 +97,16 @@ export default function DashboardHome(): JSX.Element {
           <OverviewCards overview={data.overview} />
         </section>
 
-        <section className="grid md:grid-cols-2 gap-6 mb-8">
+        <section className="mb-8">
           <AccountsSummary accounts={data.accounts} />
-          <InvestmentsSummary investments={data.investments} />
-        </section>
-
-        <section className="grid md:grid-cols-2 gap-6 mb-8">
-          <DebtOverview debts={data.debts} />
-          <CreditCardTracker creditCards={data.creditCards} />
         </section>
 
         <section className="mb-8">
-          <CashFlowInsights cashFlow={data.cashFlow} expenseCategories={data.expenseCategories} />
+          <CreditCardTracker creditCards={data.creditCards} />
         </section>
 
         <section>
-          <NotificationsAlerts notifications={data.notifications} />
+          <CashFlowInsights cashFlow={data.cashFlow} expenseCategories={data.expenseCategories} />
         </section>
       </main>
     </div>

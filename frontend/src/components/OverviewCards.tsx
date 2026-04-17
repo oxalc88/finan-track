@@ -5,12 +5,10 @@ import { formatCurrency, formatPercentage } from '../lib/formatters';
 interface OverviewCardsProps {
   overview: {
     cashBalance: number;
-    totalInvestments: number;
     totalDebt: number;
     netWorth: number;
     changes: {
       cashBalance: number;
-      totalInvestments: number;
       totalDebt: number;
       netWorth: number;
     };
@@ -52,16 +50,11 @@ function StatCard({ label, value, change, variant = 'default' }: StatCardProps):
 
 export default function OverviewCards({ overview }: OverviewCardsProps): JSX.Element {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <StatCard
         label="Cash Balance"
         value={overview.cashBalance}
         change={overview.changes.cashBalance}
-      />
-      <StatCard
-        label="Total Investments"
-        value={overview.totalInvestments}
-        change={overview.changes.totalInvestments}
       />
       <StatCard
         label="Total Debt"
