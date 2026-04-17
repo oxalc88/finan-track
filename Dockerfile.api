@@ -1,0 +1,47 @@
+# Hono API container. Built from the monorepo root so the workspace
+# package `@finanzas/shared-types` resolves via pnpm. SQLite lives in a
+# mounted volume at /data/finanzas.db.
+
+# ─── Stage 1: install + typecheck ───────────────────────────────────────
+FROM node:22-alpine AS builder
+
+RUN apk add --no-cache python3 make g++ \
+    && corepack enable
+
+WORKDIR /app
+
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+COPY backend/package.json backend/
+COPY packages/shared-types/package.json packages/shared-types/
+
+RUN pnpm install --frozen-lockfile
+
+COPY backend ./backend
+COPY packages/shared-types ./packages/shared-types
+
+RUN pnpm --filter finanzas-app exec tsc --noEmit
+
+# ─── Stage 2: runtime ───────────────────────────────────────────────────
+FROM node:22-alpine
+
+RUN apk add --no-cache poppler-utils \
+    && corepack enable
+
+WORKDIR /app
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/backend ./backend
+COPY --from=builder /app/packages/shared-types ./packages/shared-types
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+
+WORKDIR /app/backend
+
+ENV NODE_ENV=production
+ENV HOST=0.0.0.0
+ENV PORT=3000
+ENV DB_PATH=/data/finanzas.db
+
+EXPOSE 3000
+
+CMD ["node", "--import", "tsx", "src/api/index.ts"]

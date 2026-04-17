@@ -1,174 +1,49 @@
-version: '3.8'
-
 services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:16-alpine
-    container_name: finantrack-postgres
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-finantrack}
-      POSTGRES_USER: ${POSTGRES_USER:-finantrack}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Database password required}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./backend/migrations:/docker-entrypoint-initdb.d
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-finantrack}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - finantrack
-
-  # MinIO (S3-compatible storage)
-  minio:
-    image: minio/minio:latest
-    container_name: finantrack-minio
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-admin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?MinIO password required}
-    volumes:
-      - minio_data:/data
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
-    networks:
-      - finantrack
-
-  # Redis Cache
-  redis:
-    image: redis:7-alpine
-    container_name: finantrack-redis
-    command: redis-server --appendonly yes
-    volumes:
-      - redis_data:/data
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-    networks:
-      - finantrack
-
-  # Backend API
+  # Hono API (SQLite, single-user self-hosted). Built from the monorepo
+  # root so pnpm resolves the `@finanzas/shared-types` workspace package.
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.api
     container_name: finantrack-backend
     environment:
       NODE_ENV: production
+      HOST: 0.0.0.0
       PORT: 3000
-
-      # Database
-      DATABASE_URL: postgresql://${POSTGRES_USER:-finantrack}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-finantrack}
-
-      # Storage (MinIO)
-      STORAGE_ENDPOINT: http://minio:9000
-      STORAGE_BUCKET: ${STORAGE_BUCKET:-invoices}
-      STORAGE_ACCESS_KEY: ${MINIO_ROOT_USER:-admin}
-      STORAGE_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
-      STORAGE_REGION: us-east-1
-
-      # Queue (can be configured for RabbitMQ or external SQS)
-      QUEUE_TYPE: ${QUEUE_TYPE:-memory}
-
-      # Cache
-      REDIS_URL: redis://redis:6379
-
-      # WhatsApp (Kapso.ai)
-      KAPSO_API_KEY: ${KAPSO_API_KEY}
-      KAPSO_WEBHOOK_SECRET: ${KAPSO_WEBHOOK_SECRET}
-
-      # OCR
-      OCR_PROVIDER: ${OCR_PROVIDER:-tesseract}
-
-      # Logging
-      LOG_LEVEL: ${LOG_LEVEL:-info}
-    depends_on:
-      postgres:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      DB_PATH: /data/finanzas.db
+      # Optional integrations — leave blank to disable.
+      R2_ACCOUNT_ID: ${R2_ACCOUNT_ID:-}
+      R2_ACCESS_KEY_ID: ${R2_ACCESS_KEY_ID:-}
+      R2_SECRET_ACCESS_KEY: ${R2_SECRET_ACCESS_KEY:-}
+      R2_BUCKET_NAME: ${R2_BUCKET_NAME:-finanzas-raw}
+      R2_PUBLIC_URL: ${R2_PUBLIC_URL:-}
+      GOOGLE_SERVICE_ACCOUNT_KEY: ${GOOGLE_SERVICE_ACCOUNT_KEY:-}
+      DRIVE_ARCHIVE_FOLDER_ID: ${DRIVE_ARCHIVE_FOLDER_ID:-}
+      LLM_PROVIDER: ${LLM_PROVIDER:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-}
+    volumes:
+      - sqlite_data:/data
     restart: unless-stopped
     networks:
       - finantrack
 
-  # Frontend
-  frontend:
+  # Nginx: serves the built frontend SPA and proxies /api to backend:3000.
+  web:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: finantrack-frontend
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: finantrack-web
     ports:
       - "80:80"
-      - "443:443"
     depends_on:
       - backend
     restart: unless-stopped
     networks:
       - finantrack
 
-  # Optional: Worker for background jobs
-  worker:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: finantrack-worker
-    command: ["node", "dist/jobs/worker.js"]
-    environment:
-      NODE_ENV: production
-
-      # Database
-      DATABASE_URL: postgresql://${POSTGRES_USER:-finantrack}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-finantrack}
-
-      # Storage (MinIO)
-      STORAGE_ENDPOINT: http://minio:9000
-      STORAGE_BUCKET: ${STORAGE_BUCKET:-invoices}
-      STORAGE_ACCESS_KEY: ${MINIO_ROOT_USER:-admin}
-      STORAGE_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
-
-      # Queue
-      QUEUE_TYPE: ${QUEUE_TYPE:-memory}
-
-      # Cache
-      REDIS_URL: redis://redis:6379
-
-      # OCR
-      OCR_PROVIDER: ${OCR_PROVIDER:-tesseract}
-
-      # Logging
-      LOG_LEVEL: ${LOG_LEVEL:-info}
-    depends_on:
-      postgres:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    restart: unless-stopped
-    networks:
-      - finantrack
-    profiles:
-      - with-worker
-
 volumes:
-  postgres_data:
-    driver: local
-  minio_data:
-    driver: local
-  redis_data:
+  sqlite_data:
     driver: local
 
 networks:
