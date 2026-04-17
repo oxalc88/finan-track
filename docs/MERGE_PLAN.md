@@ -28,11 +28,25 @@
   deleted; `OverviewCards` reduced to 3 cards; `DashboardHome` and
   `MobileDashboard` trimmed to the remaining sections. Orphan
   `pages/Dashboard.tsx` removed. `vite-env.d.ts` added so the CSS
-  side-effect import in `main.tsx` typechecks. Frontend
-  `tsc --noEmit` is now clean.
-- **Phase 5** — New pages (Documents, Conciliations, Query) — not
-  started. Pick up from the "Phase 5 — New Pages" section below.
-- **Phase 7** — Production deployment (nginx + Hono) — not started.
+  side-effect import in `main.tsx` typechecks.
+- **Phase 5** — New pages (Documents, Conciliations, Ask) — done on
+  `claude/phase-2-tests-phase-3-start-t5HUb`. Added
+  `types/domain.ts`, three hooks (`useDocuments`, `useConciliations`,
+  `useConciliationDetail`), and three pages wired into new routes
+  `/documents`, `/conciliations`, `/query`. `SideNav` gives desktop
+  navigation; `MobileDashboard` got matching quick-access tiles.
+- **Phase 7** — Production deployment — done on
+  `claude/phase-2-tests-phase-3-start-t5HUb`. Root `Dockerfile.api`
+  (Hono + SQLite) and `Dockerfile.web` (nginx + built SPA), both
+  built from the monorepo root so pnpm resolves the shared-types
+  workspace package. Root `nginx.conf` proxies `/api/` to
+  `backend:3000`. `docker-compose.prod.yml` rewritten as a clean
+  two-service stack (`backend` + `web`). Stale per-workspace
+  Dockerfiles removed (they used `npm ci` against `workspace:*`,
+  which isn't resolvable).
+
+All 7 merge-plan phases are now shipped on
+`claude/phase-2-tests-phase-3-start-t5HUb`.
 
 ---
 
