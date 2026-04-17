@@ -1,3 +1,4 @@
+import { ResolveDiscrepanciaSchema } from "@finanzas/shared-types";
 import type Database from "better-sqlite3";
 import { Hono } from "hono";
 import {
@@ -57,8 +58,9 @@ export function createConciliationsRoutes(db: Database.Database): Hono {
 	});
 
 	app.patch("/discrepancias/:id/resolve", async (c) => {
-		const body = await c.req.json();
-		const { resolucion } = body;
+		const { resolucion } = ResolveDiscrepanciaSchema.parse(
+			await c.req.json(),
+		);
 
 		const validation = validateDiscrepanciaResolucion("RESUELTA", resolucion);
 		if (!validation.valid) {
