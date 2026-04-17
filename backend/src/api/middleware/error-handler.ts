@@ -1,4 +1,5 @@
 import type { Context } from "hono";
+import { ZodError } from "zod";
 
 export class AppError extends Error {
 	readonly statusCode: number;
@@ -10,6 +11,20 @@ export class AppError extends Error {
 }
 
 export function errorHandler(err: Error, c: Context): Response {
+	if (err instanceof ZodError) {
+		return c.json(
+			{
+				error: "Validation failed",
+				issues: err.issues.map((issue) => ({
+					path: issue.path.join("."),
+					message: issue.message,
+					code: issue.code,
+				})),
+			},
+			422,
+		);
+	}
+
 	if (err instanceof AppError) {
 		return c.json(
 			{ error: err.message },

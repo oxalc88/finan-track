@@ -24,6 +24,9 @@ describe("validationMiddleware", () => {
 
 		const app = new Hono();
 		app.use("*", validationMiddleware);
+		// Silence Hono's default errorHandler (which would console.error the
+		// ZodError before our middleware rewrites the response).
+		app.onError((_err, c) => c.body(null, 500));
 		app.post("/parse", async (c) => {
 			const body = schema.parse(await c.req.json());
 			return c.json(body, 200);
