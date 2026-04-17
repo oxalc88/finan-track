@@ -1,5 +1,27 @@
 # Plan — Merge finan-track Frontend with app-finance Backend
 
+## Progress
+
+- **Phase 1** — Scaffolding — done on
+  `claude/continue-open-issue-dVLv7` (monorepo, shared-types package,
+  workspace wiring).
+- **Phase 2** — Zod validation middleware — done on
+  `claude/continue-open-issue-dVLv7` (PR #4) and covered by 35
+  behaviour-focused tests on
+  `claude/phase-2-tests-phase-3-start-t5HUb`. Middleware fix: Hono's
+  compose swallows route-handler throws at dispatch level, so the
+  wrapper reads `c.error` after `next()`; `errorHandler` now returns
+  the 422 shape directly for `ZodError`.
+- **Phase 3** — Backend adapter + `GET /api/dashboard` — done on
+  `claude/phase-2-tests-phase-3-start-t5HUb`. New files:
+  `backend/src/api/adapters/{money,enums,dashboard}.ts`,
+  `backend/src/api/routes/dashboard.ts`; registered in
+  `backend/src/api/index.ts`.
+- **Phase 4+** — not started. Pick up from the "Phase 4 — Frontend API
+  Client" section below.
+
+---
+
 ## Context
 
 Two parallel personal-finance projects exist:
