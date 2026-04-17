@@ -17,8 +17,16 @@
   `backend/src/api/adapters/{money,enums,dashboard}.ts`,
   `backend/src/api/routes/dashboard.ts`; registered in
   `backend/src/api/index.ts`.
-- **Phase 4+** — not started. Pick up from the "Phase 4 — Frontend API
-  Client" section below.
+- **Phase 4** — Frontend API client — done on
+  `claude/phase-2-tests-phase-3-start-t5HUb`. `frontend/src/lib/api.ts`
+  replaces the mock stub with thin `fetch` wrappers
+  (`fetchDashboardData`, documents, conciliations, discrepancias,
+  `postQuery`). `formatCurrency` now defaults to `PEN`/`es-PE`.
+  Pre-existing pages that reference dropped `Investment`/`Debt`/
+  `Notification` fields still fail to typecheck — those are Phase 6
+  cleanup scope.
+- **Phase 5+** — not started. Pick up from the "Phase 5 — New Pages"
+  section below.
 
 ---
 
