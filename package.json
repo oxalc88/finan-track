@@ -1,7 +1,7 @@
 {
   "name": "finan-track-monorepo",
   "version": "1.0.0",
-  "description": "Cloud-agnostic invoice processing and financial tracking application - Monorepo",
+  "description": "Personal-finance app: Hono + SQLite backend with a React/Vite SPA frontend",
   "private": true,
   "workspaces": [
     "backend",
@@ -9,31 +9,32 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:api": "npm run dev --workspace=backend",
-    "dev:web": "npm run dev --workspace=frontend",
-    "build": "npm run build --workspace=frontend",
-    "build:web": "npm run build --workspace=frontend",
-    "build:types": "npm run build --workspace=packages/shared-types",
-    "test": "npm run test --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present",
-    "docker:up": "docker compose up -d",
-    "docker:down": "docker compose down",
-    "docker:logs": "docker compose logs -f",
+    "dev:api": "pnpm --filter finanzas-app dev",
+    "dev:web": "pnpm --filter finan-track-frontend dev",
+    "build": "pnpm --filter finan-track-frontend build",
+    "build:web": "pnpm --filter finan-track-frontend build",
+    "build:types": "pnpm --filter @finanzas/shared-types build",
+    "test": "pnpm -r --if-present test",
+    "test:api": "pnpm --filter finanzas-app test",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "db:migrate": "pnpm --filter finanzas-app db:migrate",
+    "db:seed": "pnpm --filter finanzas-app db:seed",
     "docker:prod:up": "docker compose -f docker-compose.prod.yml up -d",
     "docker:prod:down": "docker compose -f docker-compose.prod.yml down",
-    "docker:prod:build": "docker compose -f docker-compose.prod.yml build"
+    "docker:prod:build": "docker compose -f docker-compose.prod.yml build",
+    "docker:prod:logs": "docker compose -f docker-compose.prod.yml logs -f"
   },
   "keywords": [
-    "invoice",
-    "ocr",
-    "financial-tracking",
-    "whatsapp",
-    "cloud-agnostic",
+    "personal-finance",
+    "hono",
+    "sqlite",
     "monorepo"
   ],
   "author": "",
   "license": "MIT",
   "engines": {
-    "node": ">=20.0.0"
-  }
+    "node": ">=20.0.0",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.33.0"
 }
