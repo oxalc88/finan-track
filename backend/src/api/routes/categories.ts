@@ -1,3 +1,8 @@
+import {
+	CreateCategorySchema,
+	MergeCategoriesSchema,
+	UpdateCategorySchema,
+} from "@finanzas/shared-types";
 import type Database from "better-sqlite3";
 import { Hono } from "hono";
 import {
@@ -31,7 +36,7 @@ export function createCategoriesRoutes(db: Database.Database): Hono {
 	});
 
 	app.post("/", async (c) => {
-		const body = await c.req.json();
+		const body = CreateCategorySchema.parse(await c.req.json());
 
 		const existingNames = getActiveNames(db);
 		const validation = validateCategoriaNombreUnico(body.nombre, existingNames);
@@ -44,7 +49,7 @@ export function createCategoriesRoutes(db: Database.Database): Hono {
 	});
 
 	app.put("/:id", async (c) => {
-		const body = await c.req.json();
+		const body = UpdateCategorySchema.parse(await c.req.json());
 		const category = update(db, { ...body, id: c.req.param("id") });
 		if (!category) {
 			return c.json({ error: "Not found" }, 404);
@@ -53,8 +58,9 @@ export function createCategoriesRoutes(db: Database.Database): Hono {
 	});
 
 	app.post("/merge", async (c) => {
-		const body = await c.req.json();
-		const { source_id, target_id } = body;
+		const { source_id, target_id } = MergeCategoriesSchema.parse(
+			await c.req.json(),
+		);
 
 		const mergeValidation = validateMergeCategoria(source_id, target_id);
 		if (!mergeValidation.valid) {

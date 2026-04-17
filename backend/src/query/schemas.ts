@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+// Re-export the shared API request schema so callers have one source of truth.
+export { QueryRequestSchema } from "@finanzas/shared-types";
+export type { QueryRequest } from "@finanzas/shared-types";
+
 // ──────────────────────────────────────────────────────────────
 // LLM structured output schema
 // ──────────────────────────────────────────────────────────────
@@ -26,16 +30,6 @@ export const QueryTranslationSchema = z.object({
 });
 
 export type QueryTranslation = z.infer<typeof QueryTranslationSchema>;
-
-// ──────────────────────────────────────────────────────────────
-// API request schema
-// ──────────────────────────────────────────────────────────────
-
-export const QueryRequestSchema = z.object({
-	question: z.string().min(1).max(500),
-});
-
-export type QueryRequest = z.infer<typeof QueryRequestSchema>;
 
 // ──────────────────────────────────────────────────────────────
 // Query result types

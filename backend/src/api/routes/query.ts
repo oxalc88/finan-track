@@ -1,3 +1,4 @@
+import { QueryRequestSchema } from "@finanzas/shared-types";
 import { Hono } from "hono";
 import {
 	executeDuckDbQuery,
@@ -8,7 +9,6 @@ import {
 	validateSqlReadOnly,
 	validateSqlTableScope,
 } from "../../query/guard.js";
-import { QueryRequestSchema } from "../../query/schemas.js";
 import { translateQuery } from "../../query/translate.js";
 import { AppError } from "../middleware/error-handler.js";
 
@@ -16,14 +16,8 @@ export function createQueryRoutes() {
 	const app = new Hono();
 
 	app.post("/", async (c) => {
-		// 1. Validate input
-		const body = await c.req.json();
-		const parsed = QueryRequestSchema.safeParse(body);
-		if (!parsed.success) {
-			throw new AppError("Campo 'question' requerido (1-500 caracteres)", 400);
-		}
-
-		const { question } = parsed.data;
+		// 1. Validate input (throws ZodError → 422 via validationMiddleware)
+		const { question } = QueryRequestSchema.parse(await c.req.json());
 
 		// 2. LLM translation
 		const translation = await translateQuery(question);
