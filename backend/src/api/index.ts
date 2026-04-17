@@ -7,6 +7,7 @@ import { validationMiddleware } from "./middleware/validation.js";
 import { createAccountsRoutes } from "./routes/accounts.js";
 import { createCategoriesRoutes } from "./routes/categories.js";
 import { createConciliationsRoutes } from "./routes/conciliations.js";
+import { createDashboardRoutes } from "./routes/dashboard.js";
 import { createDocumentsRoutes } from "./routes/documents.js";
 import { createEntitiesRoutes } from "./routes/entities.js";
 import { createIngestRoutes } from "./routes/ingest.js";
@@ -32,6 +33,7 @@ app.route("/api/documents", createDocumentsRoutes(db));
 app.route("/api/ingest", createIngestRoutes(db));
 app.route("/api/conciliations", createConciliationsRoutes(db));
 app.route("/api/summary", createSummaryRoutes(db));
+app.route("/api/dashboard", createDashboardRoutes(db));
 app.route("/api/query", createQueryRoutes());
 
 app.get("/api/health", (c) => c.json({ status: "ok" }));
